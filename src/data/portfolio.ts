@@ -21,7 +21,7 @@ export const profile = {
 export const projects: Project[] = [
   {
     title: "Options Strategy Recommendation & Optimisation",
-    category: "Artificial Intelligence Â· Finance",
+    category: "Artificial Intelligence · Finance",
     description:
       "An intelligent options strategy recommendation system combining rule-based reasoning, knowledge representation, and genetic algorithm optimisation.",
     technologies: [
@@ -37,7 +37,7 @@ export const projects: Project[] = [
   },
   {
     title: "S&P 500 Intrinsic Value Screener",
-    category: "Machine Learning Â· Finance",
+    category: "Machine Learning · Finance",
     description:
       "A stock valuation research system combining financial forecasting with discounted cash flow analysis.",
     technologies: [
@@ -53,7 +53,7 @@ export const projects: Project[] = [
   },
   {
     title: "Face Recognition Through Siamese Network",
-    category: "Computer Vision Â· Deep Learning",
+    category: "Computer Vision · Deep Learning",
     description:
       "A facial recognition system using Siamese neural networks to learn facial similarities and distinguish identities.",
     technologies: [
