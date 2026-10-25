@@ -101,7 +101,7 @@ export const experience = [
   {
     role: "IT Officer",
     organization: "Boys' Town Singapore",
-    period: "Jan 2024 â€“ Present",
+    period: "Jan 2024 - Present",
     description:
       "Developing and supporting enterprise applications, Salesforce integrations, workflow automation, infrastructure, and cloud solutions.",
   },
@@ -111,11 +111,11 @@ export const education = [
   {
     degree: "Master of Technology in AI Systems",
     institution: "National University of Singapore (NUS-ISS)",
-    period: "2025 â€“ Present",
+    period: "2025 - Present",
   },
   {
     degree: "BSc (Hons) Computer Science (Machine Learning & AI)",
     institution: "University of London",
-    period: "2023 Â· First Class Honours",
+    period: "2023 | First Class Honours",
   },
 ];
