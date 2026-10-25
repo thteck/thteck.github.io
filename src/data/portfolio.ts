@@ -1,4 +1,4 @@
-export type Project = {
+﻿export type Project = {
   title: string;
   category: string;
   description: string;
@@ -21,7 +21,7 @@ export const profile = {
 export const projects: Project[] = [
   {
     title: "Options Strategy Recommendation & Optimisation",
-    category: "Artificial Intelligence · Finance",
+    category: "Artificial Intelligence Â· Finance",
     description:
       "An intelligent options strategy recommendation system combining rule-based reasoning, knowledge representation, and genetic algorithm optimisation.",
     technologies: [
@@ -37,7 +37,7 @@ export const projects: Project[] = [
   },
   {
     title: "S&P 500 Intrinsic Value Screener",
-    category: "Machine Learning · Finance",
+    category: "Machine Learning Â· Finance",
     description:
       "A stock valuation research system combining financial forecasting with discounted cash flow analysis.",
     technologies: [
@@ -48,11 +48,12 @@ export const projects: Project[] = [
     ],
     github:
       "https://github.com/thteck/Intrinsic-Value-Calculation-of-Stocks-Using-Machine-Learning-in-Discounted-Cash-Flow",
+    demo: "/demos/heatmap.html",
     featured: true,
   },
   {
     title: "Face Recognition Through Siamese Network",
-    category: "Computer Vision · Deep Learning",
+    category: "Computer Vision Â· Deep Learning",
     description:
       "A facial recognition system using Siamese neural networks to learn facial similarities and distinguish identities.",
     technologies: [
@@ -100,7 +101,7 @@ export const experience = [
   {
     role: "IT Officer",
     organization: "Boys' Town Singapore",
-    period: "Jan 2024 – Present",
+    period: "Jan 2024 â€“ Present",
     description:
       "Developing and supporting enterprise applications, Salesforce integrations, workflow automation, infrastructure, and cloud solutions.",
   },
@@ -110,11 +111,11 @@ export const education = [
   {
     degree: "Master of Technology in AI Systems",
     institution: "National University of Singapore (NUS-ISS)",
-    period: "2025 – Present",
+    period: "2025 â€“ Present",
   },
   {
     degree: "BSc (Hons) Computer Science (Machine Learning & AI)",
     institution: "University of London",
-    period: "2023 · First Class Honours",
+    period: "2023 Â· First Class Honours",
   },
 ];
