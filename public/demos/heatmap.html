@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intrinsic Value Heatmap</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          background: #f8f8f6; color: #1a1a1a; padding: 24px; }
+  h1   { font-size: 20px; font-weight: 500; text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 12px; color: #666; text-align: center; margin-bottom: 4px; }
+  .updated  { font-size: 11px; color: #999; text-align: right; margin-bottom: 14px; }
+  .legend { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .leg    { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #555; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .method-legend { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .mleg { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #555; }
+  .mleg-chip { padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+  .rate-note { font-size: 11px; color: #888; text-align: center; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .col  { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
+  .col-header { padding: 8px 10px; }
+  .cat-label  { font-size: 12px; font-weight: 500; }
+  .cat-range  { font-size: 10px; margin-top: 2px; opacity: 0.85; }
+  .badge { display: inline-block; background: rgba(0,0,0,0.18); border-radius: 99px;
+            padding: 0 6px; font-size: 10px; font-weight: 400; margin-left: 3px; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 3px; padding: 8px; }
+  .tile  { padding: 3px 5px 2px; border-radius: 4px; font-size: 10px; font-weight: 600;
+            cursor: default; text-align: center; min-width: 40px; }
+  .tile:hover { opacity: 0.75; }
+  .tile-ticker { line-height: 1.3; }
+  .tile-badge  { font-size: 8px; font-weight: 700; border-radius: 2px;
+                  padding: 0 3px; margin-top: 1px; display: inline-block; line-height: 1.4; }
+  .tile-rate   { font-size: 7.5px; opacity: 0.75; margin-top: 1px; }
+  .tooltip-note { font-size: 11px; color: #999; text-align: center; margin-top: 12px; }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Intrinsic Value Heatmap</h1>
+<p class="subtitle">Stocks grouped by gap between current price and intrinsic value — method &amp; discount rate selected per ticker</p>
+<p class="updated">Updated: 04 Oct 2026</p>
+
+<div class="legend">
+  <span class="leg"><span class="leg-dot" style="background:#27500A"></span>Very undervalued &lt;(30%)</span>
+  <span class="leg"><span class="leg-dot" style="background:#3B6D11"></span>Undervalued (30%)–(10%)</span>
+  <span class="leg"><span class="leg-dot" style="background:#FAC775"></span>Fairly valued ±10%</span>
+  <span class="leg"><span class="leg-dot" style="background:#F0997B"></span>Overvalued 10%–30%</span>
+  <span class="leg"><span class="leg-dot" style="background:#F09595"></span>Very overvalued &gt;30%</span>
+</div>
+
+<div class="method-legend">
+  <span class="mleg"><span class="mleg-chip" style="background:#E6F1FB;color:#0C447C">DCF</span> Discounted Cash Flow</span>
+  <span class="mleg"><span class="mleg-chip" style="background:#EAF3DE;color:#27500A">DFCF</span> Discounted Free Cash Flow</span>
+  <span class="mleg"><span class="mleg-chip" style="background:#FAEEDA;color:#633806">DNI</span> Discounted Net Income</span>
+</div>
+
+<p class="rate-note">Discount rate per tile is Beta-adjusted: &lt;0.80→5.4% | ≤1.0→6.0% | ≤1.1→6.3% | ≤1.2→6.6% | ≤1.3→6.9% | ≤1.4→7.2% | ≤1.5→7.5% | &gt;1.6→7.8%</p>
+
+<div class="grid">
+
+    <div class="col">
+      <div class="col-header" style="background:#27500A;color:#C0DD97">
+        <div class="cat-label">Very Undervalued <span class="badge">67</span></div>
+        <div class="cat-range">< (30%)</div>
+      </div>
+      <div class="tiles">
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PARA | Discounted Cash Flow | Sector: Technology | Beta: -1.068 | r: 5.4% | Price: $0.52 | IV: $2510.09 | Gap: -100.0%">
+          <div class="tile-ticker">PARA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="ACGL | Discounted Net Income | Sector: Financial Services | Beta: 0.282 | r: 5.4% | Price: $93.6 | IV: $629.46 | Gap: -85.1%">
+          <div class="tile-ticker">ACGL</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="UBER | Discounted Cash Flow | Sector: Technology | Beta: 1.159 | r: 6.6% | Price: $68.11 | IV: $422.95 | Gap: -83.9%">
+          <div class="tile-ticker">UBER</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="DECK | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.150 | r: 6.6% | Price: $79.12 | IV: $474.49 | Gap: -83.3%">
+          <div class="tile-ticker">DECK</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="APO | Discounted Net Income | Sector: Financial Services | Beta: 1.514 | r: 7.8% | Price: $114.02 | IV: $623.52 | Gap: -81.7%">
+          <div class="tile-ticker">APO</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="ADM | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.613 | r: 5.4% | Price: $80.45 | IV: $429.24 | Gap: -81.3%">
+          <div class="tile-ticker">ADM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="GOOG | Discounted Cash Flow | Sector: Communication Services | Beta: 1.225 | r: 6.9% | Price: $340.35 | IV: $1553.99 | Gap: -78.1%">
+          <div class="tile-ticker">GOOG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PAYX | Discounted Cash Flow | Sector: Technology | Beta: 0.808 | r: 6.0% | Price: $98.94 | IV: $430.22 | Gap: -77.0%">
+          <div class="tile-ticker">PAYX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PAYC | Discounted Cash Flow | Sector: Technology | Beta: 0.786 | r: 5.4% | Price: $220.99 | IV: $907.56 | Gap: -75.7%">
+          <div class="tile-ticker">PAYC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CB | Discounted Net Income | Sector: Financial Services | Beta: 0.382 | r: 5.4% | Price: $330.89 | IV: $1311.25 | Gap: -74.8%">
+          <div class="tile-ticker">CB</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CEG | Discounted Free Cash Flow | Sector: Utilities | Beta: 1.117 | r: 6.6% | Price: $257.49 | IV: $1006.75 | Gap: -74.4%">
+          <div class="tile-ticker">CEG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="FDS | Discounted Net Income | Sector: Financial Services | Beta: 0.711 | r: 5.4% | Price: $266.0 | IV: $1013.59 | Gap: -73.8%">
+          <div class="tile-ticker">FDS</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PTC | Discounted Cash Flow | Sector: Technology | Beta: 1.002 | r: 6.3% | Price: $144.03 | IV: $511.99 | Gap: -71.9%">
+          <div class="tile-ticker">PTC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="WRB | Discounted Net Income | Sector: Financial Services | Beta: 0.283 | r: 5.4% | Price: $68.98 | IV: $244.33 | Gap: -71.8%">
+          <div class="tile-ticker">WRB</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="AON | Discounted Net Income | Sector: Financial Services | Beta: 0.660 | r: 5.4% | Price: $269.45 | IV: $934.08 | Gap: -71.2%">
+          <div class="tile-ticker">AON</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CCL | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 2.312 | r: 7.8% | Price: $25.76 | IV: $84.18 | Gap: -69.4%">
+          <div class="tile-ticker">CCL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CPRT | Discounted Cash Flow | Sector: Industrials | Beta: 1.029 | r: 6.3% | Price: $27.22 | IV: $82.2 | Gap: -66.9%">
+          <div class="tile-ticker">CPRT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="APTV | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.330 | r: 7.2% | Price: $43.54 | IV: $129.84 | Gap: -66.5%">
+          <div class="tile-ticker">APTV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TTD | Discounted Free Cash Flow | Sector: Communication Services | Beta: 1.005 | r: 6.3% | Price: $11.95 | IV: $35.34 | Gap: -66.2%">
+          <div class="tile-ticker">TTD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="LULU | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.864 | r: 6.0% | Price: $94.46 | IV: $271.54 | Gap: -65.2%">
+          <div class="tile-ticker">LULU</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="NFLX | Discounted Cash Flow | Sector: Communication Services | Beta: 1.526 | r: 7.8% | Price: $67.06 | IV: $191.4 | Gap: -65.0%">
+          <div class="tile-ticker">NFLX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PRU | Discounted Net Income | Sector: Financial Services | Beta: 0.819 | r: 6.0% | Price: $112.6 | IV: $306.54 | Gap: -63.3%">
+          <div class="tile-ticker">PRU</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CMG | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.937 | r: 6.0% | Price: $32.36 | IV: $85.95 | Gap: -62.4%">
+          <div class="tile-ticker">CMG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TDY | Discounted Cash Flow | Sector: Technology | Beta: 0.908 | r: 6.0% | Price: $617.17 | IV: $1608.69 | Gap: -61.6%">
+          <div class="tile-ticker">TDY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="RJF | Discounted Net Income | Sector: Financial Services | Beta: 0.917 | r: 6.0% | Price: $158.21 | IV: $401.02 | Gap: -60.5%">
+          <div class="tile-ticker">RJF</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TJX | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.593 | r: 5.4% | Price: $132.68 | IV: $332.67 | Gap: -60.1%">
+          <div class="tile-ticker">TJX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TAP | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.420 | r: 5.4% | Price: $36.86 | IV: $92.21 | Gap: -60.0%">
+          <div class="tile-ticker">TAP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="MET | Discounted Net Income | Sector: Financial Services | Beta: 0.759 | r: 5.4% | Price: $94.43 | IV: $230.81 | Gap: -59.1%">
+          <div class="tile-ticker">MET</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="EXPE | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.250 | r: 6.9% | Price: $265.0 | IV: $641.08 | Gap: -58.7%">
+          <div class="tile-ticker">EXPE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="JPM | Discounted Net Income | Sector: Financial Services | Beta: 0.975 | r: 6.0% | Price: $332.38 | IV: $791.09 | Gap: -58.0%">
+          <div class="tile-ticker">JPM</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="AFL | Discounted Net Income | Sector: Financial Services | Beta: 0.580 | r: 5.4% | Price: $111.54 | IV: $260.93 | Gap: -57.2%">
+          <div class="tile-ticker">AFL</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="WYNN | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.991 | r: 6.0% | Price: $75.88 | IV: $175.06 | Gap: -56.7%">
+          <div class="tile-ticker">WYNN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="FOXA | Discounted Cash Flow | Sector: Communication Services | Beta: 0.559 | r: 5.4% | Price: $62.28 | IV: $140.62 | Gap: -55.7%">
+          <div class="tile-ticker">FOXA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="BRO | Discounted Net Income | Sector: Financial Services | Beta: 0.582 | r: 5.4% | Price: $59.91 | IV: $134.76 | Gap: -55.5%">
+          <div class="tile-ticker">BRO</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="LVS | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.819 | r: 6.0% | Price: $36.23 | IV: $79.32 | Gap: -54.3%">
+          <div class="tile-ticker">LVS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="PFG | Discounted Net Income | Sector: Financial Services | Beta: 0.872 | r: 6.0% | Price: $111.96 | IV: $238.86 | Gap: -53.1%">
+          <div class="tile-ticker">PFG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="AMP | Discounted Net Income | Sector: Financial Services | Beta: 1.134 | r: 6.6% | Price: $490.91 | IV: $1041.78 | Gap: -52.9%">
+          <div class="tile-ticker">AMP</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="ADP | Discounted Cash Flow | Sector: Technology | Beta: 0.830 | r: 6.0% | Price: $257.68 | IV: $540.13 | Gap: -52.3%">
+          <div class="tile-ticker">ADP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TMUS | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.331 | r: 5.4% | Price: $163.64 | IV: $340.57 | Gap: -52.0%">
+          <div class="tile-ticker">TMUS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="UAL | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.272 | r: 6.9% | Price: $112.51 | IV: $232.63 | Gap: -51.6%">
+          <div class="tile-ticker">UAL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="GEN | Discounted Free Cash Flow | Sector: Technology | Beta: 1.215 | r: 6.9% | Price: $21.99 | IV: $44.01 | Gap: -50.0%">
+          <div class="tile-ticker">GEN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="EG | Discounted Net Income | Sector: Financial Services | Beta: 0.277 | r: 5.4% | Price: $368.27 | IV: $736.07 | Gap: -50.0%">
+          <div class="tile-ticker">EG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="ADBE | Discounted Cash Flow | Sector: Technology | Beta: 1.417 | r: 7.5% | Price: $237.69 | IV: $474.47 | Gap: -49.9%">
+          <div class="tile-ticker">ADBE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="SMCI | Discounted Net Income | Sector: Technology | Beta: 1.996 | r: 7.8% | Price: $43.69 | IV: $85.46 | Gap: -48.9%">
+          <div class="tile-ticker">SMCI</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="DAL | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.291 | r: 6.9% | Price: $84.09 | IV: $163.36 | Gap: -48.5%">
+          <div class="tile-ticker">DAL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="ROL | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.736 | r: 5.4% | Price: $30.16 | IV: $58.54 | Gap: -48.5%">
+          <div class="tile-ticker">ROL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="FICO | Discounted Cash Flow | Sector: Technology | Beta: 1.318 | r: 7.2% | Price: $661.25 | IV: $1252.56 | Gap: -47.2%">
+          <div class="tile-ticker">FICO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CTVA | Discounted Free Cash Flow | Sector: Basic Materials | Beta: N/A | r: 6.0% | Price: $11.92 | IV: $22.46 | Gap: -46.9%">
+          <div class="tile-ticker">CTVA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CNC | Discounted Cash Flow | Sector: Healthcare | Beta: 1.106 | r: 6.6% | Price: $62.99 | IV: $116.72 | Gap: -46.0%">
+          <div class="tile-ticker">CNC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="GDDY | Discounted Free Cash Flow | Sector: Technology | Beta: 0.940 | r: 6.0% | Price: $97.21 | IV: $177.83 | Gap: -45.3%">
+          <div class="tile-ticker">GDDY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="LYB | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.353 | r: 5.4% | Price: $58.58 | IV: $107.06 | Gap: -45.3%">
+          <div class="tile-ticker">LYB</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="MSFT | Discounted Cash Flow | Sector: Technology | Beta: 1.108 | r: 6.6% | Price: $517.53 | IV: $945.71 | Gap: -45.3%">
+          <div class="tile-ticker">MSFT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="TRV | Discounted Net Income | Sector: Financial Services | Beta: 0.451 | r: 5.4% | Price: $360.38 | IV: $635.95 | Gap: -43.3%">
+          <div class="tile-ticker">TRV</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="SLB | Discounted Free Cash Flow | Sector: Energy | Beta: 0.774 | r: 5.4% | Price: $48.74 | IV: $85.1 | Gap: -42.7%">
+          <div class="tile-ticker">SLB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="L | Discounted Net Income | Sector: Financial Services | Beta: 0.507 | r: 5.4% | Price: $106.03 | IV: $178.89 | Gap: -40.7%">
+          <div class="tile-ticker">L</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="VLO | Discounted Free Cash Flow | Sector: Energy | Beta: 0.568 | r: 5.4% | Price: $406.3 | IV: $660.25 | Gap: -38.5%">
+          <div class="tile-ticker">VLO</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CMCSA | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.662 | r: 5.4% | Price: $21.57 | IV: $34.81 | Gap: -38.0%">
+          <div class="tile-ticker">CMCSA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="VICI | Discounted Cash Flow | Sector: Real Estate | Beta: 0.682 | r: 5.4% | Price: $22.65 | IV: $35.58 | Gap: -36.3%">
+          <div class="tile-ticker">VICI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="MCD | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.414 | r: 5.4% | Price: $231.89 | IV: $362.83 | Gap: -36.1%">
+          <div class="tile-ticker">MCD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="IT | Discounted Free Cash Flow | Sector: Technology | Beta: 0.953 | r: 6.0% | Price: $184.8 | IV: $288.14 | Gap: -35.9%">
+          <div class="tile-ticker">IT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="BRK-B | Discounted Net Income | Sector: Financial Services | Beta: 0.603 | r: 5.4% | Price: $502.65 | IV: $780.0 | Gap: -35.6%">
+          <div class="tile-ticker">BRK-B</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="VRSN | Discounted Cash Flow | Sector: Technology | Beta: 0.699 | r: 5.4% | Price: $288.32 | IV: $436.88 | Gap: -34.0%">
+          <div class="tile-ticker">VRSN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="HPQ | Discounted Cash Flow | Sector: Technology | Beta: 1.205 | r: 6.9% | Price: $32.12 | IV: $47.36 | Gap: -32.2%">
+          <div class="tile-ticker">HPQ</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="KHC | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.082 | r: 5.4% | Price: $22.19 | IV: $32.45 | Gap: -31.6%">
+          <div class="tile-ticker">KHC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="CAG | Discounted Cash Flow | Sector: Consumer Defensive | Beta: -0.033 | r: 5.4% | Price: $13.36 | IV: $19.19 | Gap: -30.4%">
+          <div class="tile-ticker">CAG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="DOC | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.989 | r: 6.0% | Price: $19.49 | IV: $28.0 | Gap: -30.4%">
+          <div class="tile-ticker">DOC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#EAF3DE;color:#27500A" title="BKNG | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.068 | r: 6.3% | Price: $159.02 | IV: $228.12 | Gap: -30.3%">
+          <div class="tile-ticker">BKNG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div></div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#3B6D11;color:#EAF3DE">
+        <div class="cat-label">Undervalued <span class="badge">34</span></div>
+        <div class="cat-range">(30%) to (10%)</div>
+      </div>
+      <div class="tiles">
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="ACN | Discounted Cash Flow | Sector: Technology | Beta: 1.092 | r: 6.3% | Price: $198.9 | IV: $283.12 | Gap: -29.8%">
+          <div class="tile-ticker">ACN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="EPAM | Discounted Free Cash Flow | Sector: Technology | Beta: 1.383 | r: 7.2% | Price: $108.29 | IV: $153.38 | Gap: -29.4%">
+          <div class="tile-ticker">EPAM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="KKR | Discounted Net Income | Sector: Financial Services | Beta: 1.791 | r: 7.8% | Price: $90.29 | IV: $127.39 | Gap: -29.1%">
+          <div class="tile-ticker">KKR</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="NVDA | Discounted Cash Flow | Sector: Technology | Beta: 2.217 | r: 7.8% | Price: $233.95 | IV: $328.55 | Gap: -28.8%">
+          <div class="tile-ticker">NVDA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="MA | Discounted Net Income | Sector: Financial Services | Beta: 0.735 | r: 5.4% | Price: $552.26 | IV: $775.2 | Gap: -28.8%">
+          <div class="tile-ticker">MA</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="INTU | Discounted Free Cash Flow | Sector: Technology | Beta: 0.976 | r: 6.0% | Price: $281.08 | IV: $393.14 | Gap: -28.5%">
+          <div class="tile-ticker">INTU</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="FSLR | Discounted Cash Flow | Sector: Technology | Beta: 1.733 | r: 7.8% | Price: $174.61 | IV: $243.76 | Gap: -28.4%">
+          <div class="tile-ticker">FSLR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="CPB | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.019 | r: 5.4% | Price: $19.62 | IV: $26.87 | Gap: -27.0%">
+          <div class="tile-ticker">CPB</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="MRK | Discounted Cash Flow | Sector: Healthcare | Beta: 0.226 | r: 5.4% | Price: $144.3 | IV: $196.29 | Gap: -26.5%">
+          <div class="tile-ticker">MRK</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="NWS | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.923 | r: 6.0% | Price: $31.65 | IV: $41.71 | Gap: -24.1%">
+          <div class="tile-ticker">NWS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="GIS | Discounted Cash Flow | Sector: Consumer Defensive | Beta: -0.025 | r: 5.4% | Price: $32.01 | IV: $42.04 | Gap: -23.9%">
+          <div class="tile-ticker">GIS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="PYPL | Discounted Net Income | Sector: Financial Services | Beta: 1.286 | r: 6.9% | Price: $52.8 | IV: $68.56 | Gap: -23.0%">
+          <div class="tile-ticker">PYPL</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="INCY | Discounted Cash Flow | Sector: Healthcare | Beta: 0.770 | r: 5.4% | Price: $115.3 | IV: $147.75 | Gap: -22.0%">
+          <div class="tile-ticker">INCY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="EQT | Discounted Free Cash Flow | Sector: Energy | Beta: 0.576 | r: 5.4% | Price: $50.17 | IV: $63.94 | Gap: -21.5%">
+          <div class="tile-ticker">EQT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="ANET | Discounted Cash Flow | Sector: Technology | Beta: 1.617 | r: 7.8% | Price: $207.35 | IV: $262.97 | Gap: -21.1%">
+          <div class="tile-ticker">ANET</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="PHM | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.201 | r: 6.9% | Price: $115.73 | IV: $145.58 | Gap: -20.5%">
+          <div class="tile-ticker">PHM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="HIG | Discounted Net Income | Sector: Financial Services | Beta: 0.450 | r: 5.4% | Price: $126.05 | IV: $156.37 | Gap: -19.4%">
+          <div class="tile-ticker">HIG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="LDOS | Discounted Cash Flow | Sector: Technology | Beta: 0.572 | r: 5.4% | Price: $117.74 | IV: $145.98 | Gap: -19.3%">
+          <div class="tile-ticker">LDOS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="CCI | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.969 | r: 6.0% | Price: $66.44 | IV: $81.86 | Gap: -18.8%">
+          <div class="tile-ticker">CCI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="HST | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.101 | r: 6.6% | Price: $22.56 | IV: $27.74 | Gap: -18.7%">
+          <div class="tile-ticker">HST</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="MTB | Discounted Net Income | Sector: Financial Services | Beta: 0.563 | r: 5.4% | Price: $219.14 | IV: $268.66 | Gap: -18.4%">
+          <div class="tile-ticker">MTB</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="ZTS | Discounted Cash Flow | Sector: Healthcare | Beta: 0.729 | r: 5.4% | Price: $69.69 | IV: $84.82 | Gap: -17.8%">
+          <div class="tile-ticker">ZTS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="GWW | Discounted Cash Flow | Sector: Industrials | Beta: 1.034 | r: 6.3% | Price: $1280.3 | IV: $1542.84 | Gap: -17.0%">
+          <div class="tile-ticker">GWW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="PODD | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.079 | r: 6.3% | Price: $131.69 | IV: $156.52 | Gap: -15.9%">
+          <div class="tile-ticker">PODD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="UHS | Discounted Cash Flow | Sector: Healthcare | Beta: 1.061 | r: 6.3% | Price: $175.72 | IV: $208.57 | Gap: -15.8%">
+          <div class="tile-ticker">UHS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="NKE | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.110 | r: 6.6% | Price: $33.87 | IV: $40.09 | Gap: -15.5%">
+          <div class="tile-ticker">NKE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="AOS | Discounted Cash Flow | Sector: Industrials | Beta: 1.153 | r: 6.6% | Price: $56.75 | IV: $66.88 | Gap: -15.2%">
+          <div class="tile-ticker">AOS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="PH | Discounted Cash Flow | Sector: Industrials | Beta: 1.123 | r: 6.6% | Price: $972.55 | IV: $1145.2 | Gap: -15.1%">
+          <div class="tile-ticker">PH</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="IDXX | Discounted Cash Flow | Sector: Healthcare | Beta: 1.538 | r: 7.8% | Price: $518.39 | IV: $598.92 | Gap: -13.4%">
+          <div class="tile-ticker">IDXX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="CE | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.755 | r: 5.4% | Price: $44.19 | IV: $50.88 | Gap: -13.2%">
+          <div class="tile-ticker">CE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="TROW | Discounted Net Income | Sector: Financial Services | Beta: 1.480 | r: 7.5% | Price: $104.62 | IV: $120.42 | Gap: -13.1%">
+          <div class="tile-ticker">TROW</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="AIG | Discounted Net Income | Sector: Financial Services | Beta: 0.511 | r: 5.4% | Price: $74.93 | IV: $85.47 | Gap: -12.3%">
+          <div class="tile-ticker">AIG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="DOW | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.424 | r: 5.4% | Price: $27.97 | IV: $31.64 | Gap: -11.6%">
+          <div class="tile-ticker">DOW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#C0DD97;color:#27500A" title="QCOM | Discounted Free Cash Flow | Sector: Technology | Beta: 1.679 | r: 7.8% | Price: $184.87 | IV: $206.2 | Gap: -10.3%">
+          <div class="tile-ticker">QCOM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div></div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#854F0B;color:#FAEEDA">
+        <div class="cat-label">Fairly Valued <span class="badge">30</span></div>
+        <div class="cat-range">(10%) to 10%</div>
+      </div>
+      <div class="tiles">
+        <div class="tile" style="background:#FAC775;color:#633806" title="HAL | Discounted Free Cash Flow | Sector: Energy | Beta: 0.769 | r: 5.4% | Price: $31.85 | IV: $35.19 | Gap: -9.5%">
+          <div class="tile-ticker">HAL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="O | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.712 | r: 5.4% | Price: $54.13 | IV: $59.57 | Gap: -9.1%">
+          <div class="tile-ticker">O</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="CTSH | Discounted Cash Flow | Sector: Technology | Beta: 0.830 | r: 6.0% | Price: $58.51 | IV: $63.77 | Gap: -8.2%">
+          <div class="tile-ticker">CTSH</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="SYF | Discounted Net Income | Sector: Financial Services | Beta: 1.308 | r: 7.2% | Price: $71.77 | IV: $77.97 | Gap: -8.0%">
+          <div class="tile-ticker">SYF</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="CINF | Discounted Net Income | Sector: Financial Services | Beta: 0.545 | r: 5.4% | Price: $161.95 | IV: $175.48 | Gap: -7.7%">
+          <div class="tile-ticker">CINF</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="CRM | Discounted Free Cash Flow | Sector: Technology | Beta: 1.202 | r: 6.9% | Price: $234.69 | IV: $249.31 | Gap: -5.9%">
+          <div class="tile-ticker">CRM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="BLDR | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.412 | r: 7.5% | Price: $56.25 | IV: $59.14 | Gap: -4.9%">
+          <div class="tile-ticker">BLDR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="DD | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.085 | r: 6.3% | Price: $129.98 | IV: $135.36 | Gap: -4.0%">
+          <div class="tile-ticker">DD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="SNA | Discounted Cash Flow | Sector: Industrials | Beta: 0.712 | r: 5.4% | Price: $368.9 | IV: $381.88 | Gap: -3.4%">
+          <div class="tile-ticker">SNA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="F | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.835 | r: 7.8% | Price: $12.1 | IV: $12.49 | Gap: -3.1%">
+          <div class="tile-ticker">F</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="J | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.679 | r: 5.4% | Price: $138.06 | IV: $142.52 | Gap: -3.1%">
+          <div class="tile-ticker">J</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="AME | Discounted Cash Flow | Sector: Industrials | Beta: 0.989 | r: 6.0% | Price: $251.93 | IV: $258.76 | Gap: -2.6%">
+          <div class="tile-ticker">AME</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="IP | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.883 | r: 6.0% | Price: $31.97 | IV: $32.5 | Gap: -1.6%">
+          <div class="tile-ticker">IP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="CAT | Discounted Cash Flow | Sector: Industrials | Beta: 1.594 | r: 7.8% | Price: $845.42 | IV: $857.39 | Gap: -1.4%">
+          <div class="tile-ticker">CAT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="SWKS | Discounted Free Cash Flow | Sector: Technology | Beta: 1.518 | r: 7.8% | Price: $85.03 | IV: $86.11 | Gap: -1.2%">
+          <div class="tile-ticker">SWKS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="NVR | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.913 | r: 6.0% | Price: $5993.85 | IV: $6067.56 | Gap: -1.2%">
+          <div class="tile-ticker">NVR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="SCHW | Discounted Net Income | Sector: Financial Services | Beta: 0.753 | r: 5.4% | Price: $96.7 | IV: $97.16 | Gap: -0.5%">
+          <div class="tile-ticker">SCHW</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="HUM | Discounted Cash Flow | Sector: Healthcare | Beta: 0.745 | r: 5.4% | Price: $388.36 | IV: $384.78 | Gap: +0.9%">
+          <div class="tile-ticker">HUM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="PCAR | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.972 | r: 6.0% | Price: $109.68 | IV: $108.64 | Gap: +1.0%">
+          <div class="tile-ticker">PCAR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="COR | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.574 | r: 5.4% | Price: $309.05 | IV: $304.04 | Gap: +1.6%">
+          <div class="tile-ticker">COR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="ALL | Discounted Net Income | Sector: Financial Services | Beta: 0.150 | r: 5.4% | Price: $223.74 | IV: $219.99 | Gap: +1.7%">
+          <div class="tile-ticker">ALL</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="V | Discounted Net Income | Sector: Financial Services | Beta: 0.761 | r: 5.4% | Price: $360.66 | IV: $351.4 | Gap: +2.6%">
+          <div class="tile-ticker">V</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="ARE | Discounted Cash Flow | Sector: Real Estate | Beta: 1.168 | r: 6.6% | Price: $47.37 | IV: $46.1 | Gap: +2.8%">
+          <div class="tile-ticker">ARE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="KIM | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.956 | r: 6.0% | Price: $22.24 | IV: $21.51 | Gap: +3.4%">
+          <div class="tile-ticker">KIM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="EFX | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.305 | r: 7.2% | Price: $140.0 | IV: $134.38 | Gap: +4.2%">
+          <div class="tile-ticker">EFX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="ELV | Discounted Cash Flow | Sector: Healthcare | Beta: 0.696 | r: 5.4% | Price: $386.43 | IV: $369.37 | Gap: +4.6%">
+          <div class="tile-ticker">ELV</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="BSX | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.568 | r: 5.4% | Price: $42.6 | IV: $40.62 | Gap: +4.9%">
+          <div class="tile-ticker">BSX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="POOL | Discounted Cash Flow | Sector: Industrials | Beta: 1.055 | r: 6.3% | Price: $161.42 | IV: $150.99 | Gap: +6.9%">
+          <div class="tile-ticker">POOL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="TSCO | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.469 | r: 5.4% | Price: $31.09 | IV: $28.53 | Gap: +9.0%">
+          <div class="tile-ticker">TSCO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#FAC775;color:#633806" title="BWA | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.103 | r: 6.6% | Price: $60.52 | IV: $55.06 | Gap: +9.9%">
+          <div class="tile-ticker">BWA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div></div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#993C1D;color:#FAECE7">
+        <div class="cat-label">Overvalued <span class="badge">16</span></div>
+        <div class="cat-range">10% to 30%</div>
+      </div>
+      <div class="tiles">
+        <div class="tile" style="background:#F0997B;color:#712B13" title="MO | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.494 | r: 5.4% | Price: $67.35 | IV: $61.19 | Gap: +10.1%">
+          <div class="tile-ticker">MO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="SWK | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.173 | r: 6.6% | Price: $91.34 | IV: $82.93 | Gap: +10.1%">
+          <div class="tile-ticker">SWK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="ALB | Discounted Cash Flow | Sector: Basic Materials | Beta: 1.334 | r: 7.2% | Price: $104.59 | IV: $92.93 | Gap: +12.5%">
+          <div class="tile-ticker">ALB</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="ENPH | Discounted Cash Flow | Sector: Technology | Beta: 1.643 | r: 7.8% | Price: $33.47 | IV: $28.9 | Gap: +15.8%">
+          <div class="tile-ticker">ENPH</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="TXT | Discounted Cash Flow | Sector: Industrials | Beta: 0.898 | r: 6.0% | Price: $77.26 | IV: $66.23 | Gap: +16.7%">
+          <div class="tile-ticker">TXT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="BKR | Discounted Cash Flow | Sector: Energy | Beta: 0.961 | r: 6.0% | Price: $56.0 | IV: $47.81 | Gap: +17.1%">
+          <div class="tile-ticker">BKR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="AIZ | Discounted Net Income | Sector: Financial Services | Beta: 0.542 | r: 5.4% | Price: $267.32 | IV: $227.03 | Gap: +17.8%">
+          <div class="tile-ticker">AIZ</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="BAX | Discounted Cash Flow | Sector: Healthcare | Beta: 0.595 | r: 5.4% | Price: $23.49 | IV: $19.64 | Gap: +19.6%">
+          <div class="tile-ticker">BAX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="REGN | Discounted Cash Flow | Sector: Healthcare | Beta: 0.193 | r: 5.4% | Price: $735.2 | IV: $599.06 | Gap: +22.7%">
+          <div class="tile-ticker">REGN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="MPWR | Discounted Cash Flow | Sector: Technology | Beta: 1.664 | r: 7.8% | Price: $1439.73 | IV: $1169.63 | Gap: +23.1%">
+          <div class="tile-ticker">MPWR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="ALGN | Discounted Cash Flow | Sector: Healthcare | Beta: 1.643 | r: 7.8% | Price: $143.74 | IV: $115.17 | Gap: +24.8%">
+          <div class="tile-ticker">ALGN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="CTAS | Discounted Cash Flow | Sector: Industrials | Beta: 0.913 | r: 6.0% | Price: $193.02 | IV: $153.34 | Gap: +25.9%">
+          <div class="tile-ticker">CTAS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="CLX | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.544 | r: 5.4% | Price: $80.41 | IV: $63.47 | Gap: +26.7%">
+          <div class="tile-ticker">CLX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="LEN | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.398 | r: 7.2% | Price: $79.81 | IV: $62.77 | Gap: +27.1%">
+          <div class="tile-ticker">LEN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="CPAY | Discounted Cash Flow | Sector: Technology | Beta: 0.873 | r: 6.0% | Price: $394.6 | IV: $308.22 | Gap: +28.0%">
+          <div class="tile-ticker">CPAY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F0997B;color:#712B13" title="EOG | Discounted Free Cash Flow | Sector: Energy | Beta: 0.272 | r: 5.4% | Price: $141.38 | IV: $109.11 | Gap: +29.6%">
+          <div class="tile-ticker">EOG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div></div>
+    </div>
+    <div class="col">
+      <div class="col-header" style="background:#791F1F;color:#FCEBEB">
+        <div class="cat-label">Very Overvalued <span class="badge">340</span></div>
+        <div class="cat-range">> 30%</div>
+      </div>
+      <div class="tiles">
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BMY | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.227 | r: 5.4% | Price: $61.15 | IV: $46.23 | Gap: +32.3%">
+          <div class="tile-ticker">BMY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ADSK | Discounted Free Cash Flow | Sector: Technology | Beta: 1.309 | r: 7.2% | Price: $212.0 | IV: $159.7 | Gap: +32.8%">
+          <div class="tile-ticker">ADSK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AVY | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.814 | r: 6.0% | Price: $169.87 | IV: $122.31 | Gap: +38.9%">
+          <div class="tile-ticker">AVY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AJG | Discounted Net Income | Sector: Financial Services | Beta: 0.506 | r: 5.4% | Price: $226.11 | IV: $158.44 | Gap: +42.7%">
+          <div class="tile-ticker">AJG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ALLE | Discounted Cash Flow | Sector: Industrials | Beta: 0.841 | r: 6.0% | Price: $154.21 | IV: $103.02 | Gap: +49.7%">
+          <div class="tile-ticker">ALLE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AZO | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.340 | r: 5.4% | Price: $2792.03 | IV: $1689.84 | Gap: +65.2%">
+          <div class="tile-ticker">AZO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BALL | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.951 | r: 6.0% | Price: $56.37 | IV: $32.59 | Gap: +73.0%">
+          <div class="tile-ticker">BALL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="A | Discounted Cash Flow | Sector: Healthcare | Beta: 1.241 | r: 6.9% | Price: $167.78 | IV: $94.65 | Gap: +77.3%">
+          <div class="tile-ticker">A</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BIO | Discounted Cash Flow | Sector: Healthcare | Beta: 1.070 | r: 6.3% | Price: $369.14 | IV: $201.57 | Gap: +83.1%">
+          <div class="tile-ticker">BIO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ABT | Discounted Cash Flow | Sector: Healthcare | Beta: 0.586 | r: 5.4% | Price: $97.5 | IV: $50.65 | Gap: +92.5%">
+          <div class="tile-ticker">ABT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AES | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.950 | r: 6.0% | Price: $14.91 | IV: $-126.1 | Gap: +111.8%">
+          <div class="tile-ticker">AES</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BBWI | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.371 | r: 7.2% | Price: $16.06 | IV: $7.52 | Gap: +113.7%">
+          <div class="tile-ticker">BBWI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AAL | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.327 | r: 7.2% | Price: $12.94 | IV: $-45.67 | Gap: +128.3%">
+          <div class="tile-ticker">AAL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMAT | Discounted Cash Flow | Sector: Technology | Beta: 1.597 | r: 7.8% | Price: $540.04 | IV: $205.11 | Gap: +163.3%">
+          <div class="tile-ticker">AMAT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AWK | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.580 | r: 5.4% | Price: $130.25 | IV: $-184.02 | Gap: +170.8%">
+          <div class="tile-ticker">AWK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BLK | Discounted Net Income | Sector: Financial Services | Beta: 1.429 | r: 7.5% | Price: $1059.63 | IV: $385.72 | Gap: +174.7%">
+          <div class="tile-ticker">BLK</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMGN | Discounted Cash Flow | Sector: Healthcare | Beta: 0.426 | r: 5.4% | Price: $403.04 | IV: $145.42 | Gap: +177.2%">
+          <div class="tile-ticker">AMGN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="APD | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.754 | r: 5.4% | Price: $277.57 | IV: $99.37 | Gap: +179.3%">
+          <div class="tile-ticker">APD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AVGO | Discounted Cash Flow | Sector: Technology | Beta: 1.457 | r: 7.5% | Price: $355.14 | IV: $125.89 | Gap: +182.1%">
+          <div class="tile-ticker">AVGO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AEE | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.470 | r: 5.4% | Price: $99.94 | IV: $-109.79 | Gap: +191.0%">
+          <div class="tile-ticker">AEE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ABNB | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.161 | r: 6.6% | Price: $162.43 | IV: $55.31 | Gap: +193.7%">
+          <div class="tile-ticker">ABNB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AVB | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.773 | r: 5.4% | Price: $184.06 | IV: $59.94 | Gap: +207.1%">
+          <div class="tile-ticker">AVB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AEP | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.500 | r: 5.4% | Price: $119.57 | IV: $-103.73 | Gap: +215.3%">
+          <div class="tile-ticker">AEP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BG | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.660 | r: 5.4% | Price: $106.72 | IV: $-77.6 | Gap: +237.5%">
+          <div class="tile-ticker">BG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AAPL | Discounted Cash Flow | Sector: Technology | Beta: 1.085 | r: 6.3% | Price: $333.69 | IV: $97.28 | Gap: +243.0%">
+          <div class="tile-ticker">AAPL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AXP | Discounted Net Income | Sector: Financial Services | Beta: 1.048 | r: 6.3% | Price: $302.78 | IV: $87.93 | Gap: +244.3%">
+          <div class="tile-ticker">AXP</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ATO | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.594 | r: 5.4% | Price: $157.17 | IV: $-101.34 | Gap: +255.1%">
+          <div class="tile-ticker">ATO</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ADI | Discounted Free Cash Flow | Sector: Technology | Beta: 1.205 | r: 6.9% | Price: $417.15 | IV: $98.43 | Gap: +323.8%">
+          <div class="tile-ticker">ADI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMCR | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.595 | r: 5.4% | Price: $41.86 | IV: $-13.42 | Gap: +411.9%">
+          <div class="tile-ticker">AMCR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BEN | Discounted Net Income | Sector: Financial Services | Beta: 1.570 | r: 7.8% | Price: $32.81 | IV: $-9.34 | Gap: +451.2%">
+          <div class="tile-ticker">BEN</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BA | Discounted Cash Flow | Sector: Industrials | Beta: 1.213 | r: 6.9% | Price: $193.56 | IV: $-31.56 | Gap: +713.4%">
+          <div class="tile-ticker">BA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ABBV | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.281 | r: 5.4% | Price: $262.82 | IV: $30.56 | Gap: +760.1%">
+          <div class="tile-ticker">ABBV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AKAM | Discounted Free Cash Flow | Sector: Technology | Beta: 0.635 | r: 5.4% | Price: $108.92 | IV: $11.7 | Gap: +830.8%">
+          <div class="tile-ticker">AKAM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMD | Discounted Free Cash Flow | Sector: Technology | Beta: 2.476 | r: 7.8% | Price: $633.91 | IV: $64.7 | Gap: +879.7%">
+          <div class="tile-ticker">AMD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BIIB | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.171 | r: 5.4% | Price: $219.88 | IV: $-25.04 | Gap: +978.1%">
+          <div class="tile-ticker">BIIB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BDX | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.276 | r: 5.4% | Price: $176.8 | IV: $13.89 | Gap: +1173.2%">
+          <div class="tile-ticker">BDX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BBY | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.305 | r: 7.2% | Price: $87.97 | IV: $5.82 | Gap: +1412.3%">
+          <div class="tile-ticker">BBY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMT | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.895 | r: 6.0% | Price: $162.2 | IV: $-11.29 | Gap: +1536.4%">
+          <div class="tile-ticker">AMT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AXON | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.399 | r: 7.2% | Price: $413.35 | IV: $23.26 | Gap: +1677.3%">
+          <div class="tile-ticker">AXON</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="APA | Discounted Free Cash Flow | Sector: Energy | Beta: 0.366 | r: 5.4% | Price: $43.68 | IV: $-2.08 | Gap: +2202.9%">
+          <div class="tile-ticker">APA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BAC | Discounted Net Income | Sector: Financial Services | Beta: 1.164 | r: 6.6% | Price: $53.75 | IV: $-2.25 | Gap: +2487.3%">
+          <div class="tile-ticker">BAC</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="AMZN | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.443 | r: 7.5% | Price: $251.52 | IV: $6.97 | Gap: +3510.7%">
+          <div class="tile-ticker">AMZN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="APH | Discounted Cash Flow | Sector: Technology | Beta: 1.242 | r: 6.9% | Price: $86.96 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">APH</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DHI | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.371 | r: 7.2% | Price: $135.0 | IV: $98.04 | Gap: +37.7%">
+          <div class="tile-ticker">DHI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CI | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.317 | r: 5.4% | Price: $270.53 | IV: $195.13 | Gap: +38.6%">
+          <div class="tile-ticker">CI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CL | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.323 | r: 5.4% | Price: $84.26 | IV: $58.56 | Gap: +43.9%">
+          <div class="tile-ticker">CL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CAH | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.519 | r: 5.4% | Price: $228.3 | IV: $140.49 | Gap: +62.5%">
+          <div class="tile-ticker">CAH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CBOE | Discounted Net Income | Sector: Financial Services | Beta: 0.408 | r: 5.4% | Price: $271.26 | IV: $152.69 | Gap: +77.7%">
+          <div class="tile-ticker">CBOE</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CRL | Discounted Cash Flow | Sector: Healthcare | Beta: 1.405 | r: 7.5% | Price: $290.19 | IV: $162.94 | Gap: +78.1%">
+          <div class="tile-ticker">CRL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CDW | Discounted Cash Flow | Sector: Technology | Beta: 0.941 | r: 6.0% | Price: $133.29 | IV: $72.91 | Gap: +82.8%">
+          <div class="tile-ticker">CDW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BR | Discounted Cash Flow | Sector: Technology | Beta: 0.910 | r: 6.0% | Price: $156.93 | IV: $81.35 | Gap: +92.9%">
+          <div class="tile-ticker">BR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CHTR | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.687 | r: 5.4% | Price: $109.29 | IV: $-726.1 | Gap: +115.0%">
+          <div class="tile-ticker">CHTR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="D | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.622 | r: 5.4% | Price: $61.31 | IV: $-301.3 | Gap: +120.3%">
+          <div class="tile-ticker">D</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CNP | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.451 | r: 5.4% | Price: $37.79 | IV: $-93.67 | Gap: +140.3%">
+          <div class="tile-ticker">CNP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CMS | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.331 | r: 5.4% | Price: $63.74 | IV: $-139.07 | Gap: +145.8%">
+          <div class="tile-ticker">CMS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CME | Discounted Net Income | Sector: Financial Services | Beta: 0.275 | r: 5.4% | Price: $263.14 | IV: $102.39 | Gap: +157.0%">
+          <div class="tile-ticker">CME</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CSCO | Discounted Cash Flow | Sector: Technology | Beta: 0.992 | r: 6.0% | Price: $112.2 | IV: $41.14 | Gap: +172.8%">
+          <div class="tile-ticker">CSCO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DG | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.235 | r: 5.4% | Price: $118.94 | IV: $43.27 | Gap: +174.9%">
+          <div class="tile-ticker">DG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="C | Discounted Net Income | Sector: Financial Services | Beta: 1.097 | r: 6.3% | Price: $128.5 | IV: $-161.18 | Gap: +179.7%">
+          <div class="tile-ticker">C</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CZR | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.751 | r: 7.8% | Price: $29.65 | IV: $-33.82 | Gap: +187.7%">
+          <div class="tile-ticker">CZR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CF | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 0.399 | r: 5.4% | Price: $115.01 | IV: $38.89 | Gap: +195.7%">
+          <div class="tile-ticker">CF</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CMI | Discounted Cash Flow | Sector: Industrials | Beta: 1.226 | r: 6.9% | Price: $528.32 | IV: $178.52 | Gap: +195.9%">
+          <div class="tile-ticker">CMI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CARR | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.298 | r: 6.9% | Price: $55.12 | IV: $17.42 | Gap: +216.5%">
+          <div class="tile-ticker">CARR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DIS | Discounted Cash Flow | Sector: Communication Services | Beta: 1.409 | r: 7.5% | Price: $102.19 | IV: $32.18 | Gap: +217.6%">
+          <div class="tile-ticker">DIS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="COST | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.855 | r: 6.0% | Price: $920.65 | IV: $272.55 | Gap: +237.8%">
+          <div class="tile-ticker">COST</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BX | Discounted Net Income | Sector: Financial Services | Beta: 1.558 | r: 7.8% | Price: $111.75 | IV: $29.85 | Gap: +274.4%">
+          <div class="tile-ticker">BX</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CBRE | Discounted Cash Flow | Sector: Real Estate | Beta: 1.188 | r: 6.6% | Price: $129.58 | IV: $30.31 | Gap: +327.5%">
+          <div class="tile-ticker">CBRE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DHR | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.808 | r: 6.0% | Price: $214.06 | IV: $47.98 | Gap: +346.1%">
+          <div class="tile-ticker">DHR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CFG | Discounted Net Income | Sector: Financial Services | Beta: 0.997 | r: 6.0% | Price: $64.33 | IV: $12.89 | Gap: +399.0%">
+          <div class="tile-ticker">CFG</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="COP | Discounted Free Cash Flow | Sector: Energy | Beta: 0.134 | r: 5.4% | Price: $126.75 | IV: $25.12 | Gap: +404.6%">
+          <div class="tile-ticker">COP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CDNS | Discounted Free Cash Flow | Sector: Technology | Beta: 1.137 | r: 6.6% | Price: $351.35 | IV: $66.54 | Gap: +428.0%">
+          <div class="tile-ticker">CDNS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="BXP | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.033 | r: 6.3% | Price: $60.45 | IV: $10.78 | Gap: +461.0%">
+          <div class="tile-ticker">BXP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CHD | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.472 | r: 5.4% | Price: $94.31 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">CHD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CHRW | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.943 | r: 6.0% | Price: $157.72 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">CHRW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DE | Discounted Cash Flow | Sector: Industrials | Beta: 0.911 | r: 6.0% | Price: $687.0 | IV: $170.81 | Gap: +302.2%">
+          <div class="tile-ticker">DE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CVS | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.580 | r: 5.4% | Price: $86.46 | IV: $-27.82 | Gap: +410.7%">
+          <div class="tile-ticker">CVS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CRWD | Discounted Cash Flow | Sector: Technology | Beta: 1.255 | r: 6.9% | Price: $270.04 | IV: $37.66 | Gap: +617.0%">
+          <div class="tile-ticker">CRWD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DELL | Discounted Free Cash Flow | Sector: Technology | Beta: 1.409 | r: 7.5% | Price: $562.52 | IV: $66.34 | Gap: +747.9%">
+          <div class="tile-ticker">DELL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CSX | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.207 | r: 6.9% | Price: $47.43 | IV: $-6.58 | Gap: +820.3%">
+          <div class="tile-ticker">CSX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CVX | Discounted Free Cash Flow | Sector: Energy | Beta: 0.491 | r: 5.4% | Price: $206.69 | IV: $19.67 | Gap: +950.6%">
+          <div class="tile-ticker">CVX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DGX | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.549 | r: 5.4% | Price: $233.33 | IV: $13.56 | Gap: +1621.0%">
+          <div class="tile-ticker">DGX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="COF | Discounted Net Income | Sector: Financial Services | Beta: 1.016 | r: 6.3% | Price: $194.72 | IV: $10.39 | Gap: +1774.0%">
+          <div class="tile-ticker">COF</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="COO | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.818 | r: 6.0% | Price: $56.91 | IV: $-3.07 | Gap: +1953.6%">
+          <div class="tile-ticker">COO</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CPT | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.782 | r: 5.4% | Price: $95.96 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">CPT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="CSGP | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.747 | r: 5.4% | Price: $27.38 | IV: $0.29 | Gap: +9287.3%">
+          <div class="tile-ticker">CSGP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DLR | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.037 | r: 6.3% | Price: $178.55 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">DLR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DLTR | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.662 | r: 5.4% | Price: $112.16 | IV: $83.43 | Gap: +34.4%">
+          <div class="tile-ticker">DLTR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ETSY | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.813 | r: 7.8% | Price: $72.77 | IV: $50.62 | Gap: +43.8%">
+          <div class="tile-ticker">ETSY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DRI | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.590 | r: 5.4% | Price: $200.33 | IV: $132.02 | Gap: +51.7%">
+          <div class="tile-ticker">DRI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HII | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.225 | r: 5.4% | Price: $268.54 | IV: $175.47 | Gap: +53.0%">
+          <div class="tile-ticker">HII</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HON | Discounted Cash Flow | Sector: Industrials | Beta: 0.901 | r: 6.0% | Price: $213.99 | IV: $139.34 | Gap: +53.6%">
+          <div class="tile-ticker">HON</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GL | Discounted Net Income | Sector: Financial Services | Beta: 0.462 | r: 5.4% | Price: $165.68 | IV: $107.79 | Gap: +53.7%">
+          <div class="tile-ticker">GL</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GD | Discounted Cash Flow | Sector: Industrials | Beta: 0.321 | r: 5.4% | Price: $330.09 | IV: $208.31 | Gap: +58.5%">
+          <div class="tile-ticker">GD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DXCM | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.419 | r: 7.5% | Price: $85.36 | IV: $51.74 | Gap: +65.0%">
+          <div class="tile-ticker">DXCM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="JBL | Discounted Free Cash Flow | Sector: Technology | Beta: 1.292 | r: 6.9% | Price: $304.41 | IV: $183.55 | Gap: +65.8%">
+          <div class="tile-ticker">JBL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FDX | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.364 | r: 7.2% | Price: $290.36 | IV: $173.98 | Gap: +66.9%">
+          <div class="tile-ticker">FDX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EXR | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.176 | r: 6.6% | Price: $133.25 | IV: $79.11 | Gap: +68.5%">
+          <div class="tile-ticker">EXR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FTNT | Discounted Cash Flow | Sector: Technology | Beta: 1.059 | r: 6.3% | Price: $180.95 | IV: $105.2 | Gap: +72.0%">
+          <div class="tile-ticker">FTNT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HD | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.955 | r: 6.0% | Price: $282.85 | IV: $162.11 | Gap: +74.5%">
+          <div class="tile-ticker">HD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HSY | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.097 | r: 5.4% | Price: $160.19 | IV: $89.52 | Gap: +78.9%">
+          <div class="tile-ticker">HSY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="JKHY | Discounted Free Cash Flow | Sector: Technology | Beta: 0.564 | r: 5.4% | Price: $142.54 | IV: $77.83 | Gap: +83.1%">
+          <div class="tile-ticker">JKHY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IBM | Discounted Cash Flow | Sector: Technology | Beta: 0.708 | r: 5.4% | Price: $222.64 | IV: $121.39 | Gap: +83.4%">
+          <div class="tile-ticker">IBM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FERG | Discounted Cash Flow | Sector: Industrials | Beta: 1.112 | r: 6.6% | Price: $223.33 | IV: $121.66 | Gap: +83.6%">
+          <div class="tile-ticker">FERG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HAS | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.466 | r: 5.4% | Price: $89.54 | IV: $47.65 | Gap: +87.9%">
+          <div class="tile-ticker">HAS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GILD | Discounted Cash Flow | Sector: Healthcare | Beta: 0.350 | r: 5.4% | Price: $144.74 | IV: $76.3 | Gap: +89.7%">
+          <div class="tile-ticker">GILD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HUBB | Discounted Cash Flow | Sector: Industrials | Beta: 0.889 | r: 6.0% | Price: $475.52 | IV: $250.58 | Gap: +89.8%">
+          <div class="tile-ticker">HUBB</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GRMN | Discounted Cash Flow | Sector: Technology | Beta: 0.866 | r: 6.0% | Price: $281.16 | IV: $146.9 | Gap: +91.4%">
+          <div class="tile-ticker">GRMN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DPZ | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.946 | r: 6.0% | Price: $297.62 | IV: $149.24 | Gap: +99.4%">
+          <div class="tile-ticker">DPZ</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="JBHT | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.289 | r: 6.9% | Price: $234.2 | IV: $116.97 | Gap: +100.2%">
+          <div class="tile-ticker">JBHT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GEHC | Discounted Cash Flow | Sector: Healthcare | Beta: 0.821 | r: 6.0% | Price: $64.29 | IV: $31.72 | Gap: +102.7%">
+          <div class="tile-ticker">GEHC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IEX | Discounted Cash Flow | Sector: Industrials | Beta: 0.972 | r: 6.0% | Price: $232.99 | IV: $113.51 | Gap: +105.3%">
+          <div class="tile-ticker">IEX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EA | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.642 | r: 5.4% | Price: $209.7 | IV: $101.19 | Gap: +107.2%">
+          <div class="tile-ticker">EA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EQR | Discounted Cash Flow | Sector: Real Estate | Beta: 0.749 | r: 5.4% | Price: $63.66 | IV: $30.23 | Gap: +110.6%">
+          <div class="tile-ticker">EQR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GM | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.321 | r: 7.2% | Price: $78.27 | IV: $36.4 | Gap: +115.0%">
+          <div class="tile-ticker">GM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HCA | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.109 | r: 6.6% | Price: $426.69 | IV: $198.13 | Gap: +115.4%">
+          <div class="tile-ticker">HCA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FMC | Discounted Net Income | Sector: Basic Materials | Beta: 0.418 | r: 5.4% | Price: $8.44 | IV: $-53.28 | Gap: +115.8%">
+          <div class="tile-ticker">FMC</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EBAY | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.339 | r: 7.2% | Price: $106.4 | IV: $48.13 | Gap: +121.1%">
+          <div class="tile-ticker">EBAY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FRT | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.919 | r: 6.0% | Price: $106.69 | IV: $47.07 | Gap: +126.7%">
+          <div class="tile-ticker">FRT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IR | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.147 | r: 6.6% | Price: $76.07 | IV: $33.37 | Gap: +128.0%">
+          <div class="tile-ticker">IR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FTV | Discounted Free Cash Flow | Sector: Technology | Beta: 0.973 | r: 6.0% | Price: $57.47 | IV: $25.21 | Gap: +128.0%">
+          <div class="tile-ticker">FTV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EXPD | Discounted Cash Flow | Sector: Industrials | Beta: 1.058 | r: 6.3% | Price: $192.47 | IV: $82.91 | Gap: +132.1%">
+          <div class="tile-ticker">EXPD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="JNJ | Discounted Cash Flow | Sector: Healthcare | Beta: 0.235 | r: 5.4% | Price: $256.03 | IV: $108.03 | Gap: +137.0%">
+          <div class="tile-ticker">JNJ</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FE | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.441 | r: 5.4% | Price: $43.34 | IV: $-98.09 | Gap: +144.2%">
+          <div class="tile-ticker">FE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ITW | Discounted Cash Flow | Sector: Industrials | Beta: 0.997 | r: 6.0% | Price: $262.92 | IV: $106.31 | Gap: +147.3%">
+          <div class="tile-ticker">ITW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EVRG | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.510 | r: 5.4% | Price: $79.17 | IV: $-162.75 | Gap: +148.7%">
+          <div class="tile-ticker">EVRG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DOV | Discounted Cash Flow | Sector: Industrials | Beta: 1.146 | r: 6.6% | Price: $189.69 | IV: $75.95 | Gap: +149.7%">
+          <div class="tile-ticker">DOV</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EXC | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.389 | r: 5.4% | Price: $40.73 | IV: $-73.98 | Gap: +155.1%">
+          <div class="tile-ticker">EXC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DTE | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.388 | r: 5.4% | Price: $124.45 | IV: $-225.47 | Gap: +155.2%">
+          <div class="tile-ticker">DTE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FAST | Discounted Cash Flow | Sector: Industrials | Beta: 0.713 | r: 5.4% | Price: $50.75 | IV: $19.73 | Gap: +157.3%">
+          <div class="tile-ticker">FAST</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IRM | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.204 | r: 6.9% | Price: $113.39 | IV: $-162.77 | Gap: +169.7%">
+          <div class="tile-ticker">IRM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GPN | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.785 | r: 5.4% | Price: $78.38 | IV: $28.23 | Gap: +177.6%">
+          <div class="tile-ticker">GPN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ES | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.698 | r: 5.4% | Price: $64.5 | IV: $-82.28 | Gap: +178.4%">
+          <div class="tile-ticker">ES</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FANG | Discounted Free Cash Flow | Sector: Energy | Beta: 0.414 | r: 5.4% | Price: $184.71 | IV: $-231.2 | Gap: +179.9%">
+          <div class="tile-ticker">FANG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GS | Discounted Net Income | Sector: Financial Services | Beta: 1.283 | r: 6.9% | Price: $902.56 | IV: $-1123.68 | Gap: +180.3%">
+          <div class="tile-ticker">GS</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FFIV | Discounted Cash Flow | Sector: Technology | Beta: 1.030 | r: 6.3% | Price: $454.04 | IV: $155.93 | Gap: +191.2%">
+          <div class="tile-ticker">FFIV</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DUK | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.364 | r: 5.4% | Price: $114.13 | IV: $-120.38 | Gap: +194.8%">
+          <div class="tile-ticker">DUK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EW | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.852 | r: 6.0% | Price: $85.15 | IV: $27.61 | Gap: +208.4%">
+          <div class="tile-ticker">EW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FIS | Discounted Free Cash Flow | Sector: Technology | Beta: 0.801 | r: 6.0% | Price: $32.44 | IV: $-27.66 | Gap: +217.3%">
+          <div class="tile-ticker">FIS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GLW | Discounted Free Cash Flow | Sector: Technology | Beta: 1.151 | r: 6.6% | Price: $164.19 | IV: $51.38 | Gap: +219.6%">
+          <div class="tile-ticker">GLW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ETR | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.481 | r: 5.4% | Price: $100.91 | IV: $-75.22 | Gap: +234.2%">
+          <div class="tile-ticker">ETR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ISRG | Discounted Cash Flow | Sector: Healthcare | Beta: 1.465 | r: 7.5% | Price: $391.95 | IV: $112.17 | Gap: +249.4%">
+          <div class="tile-ticker">ISRG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HRL | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.315 | r: 5.4% | Price: $20.25 | IV: $5.77 | Gap: +250.7%">
+          <div class="tile-ticker">HRL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IVZ | Discounted Net Income | Sector: Financial Services | Beta: 1.605 | r: 7.8% | Price: $30.66 | IV: $-18.14 | Gap: +269.0%">
+          <div class="tile-ticker">IVZ</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IQV | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.186 | r: 6.6% | Price: $258.21 | IV: $66.31 | Gap: +289.4%">
+          <div class="tile-ticker">IQV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GEV | Discounted Cash Flow | Sector: Industrials | Beta: 0.967 | r: 6.0% | Price: $988.7 | IV: $253.54 | Gap: +290.0%">
+          <div class="tile-ticker">GEV</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="INTC | Discounted Cash Flow | Sector: Technology | Beta: 2.231 | r: 7.8% | Price: $119.33 | IV: $29.97 | Gap: +298.1%">
+          <div class="tile-ticker">INTC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GNRC | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.913 | r: 7.8% | Price: $216.8 | IV: $51.74 | Gap: +319.0%">
+          <div class="tile-ticker">GNRC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DVA | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.830 | r: 6.0% | Price: $178.69 | IV: $41.19 | Gap: +333.8%">
+          <div class="tile-ticker">DVA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="IFF | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.953 | r: 6.0% | Price: $82.42 | IV: $17.68 | Gap: +366.1%">
+          <div class="tile-ticker">IFF</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FITB | Discounted Net Income | Sector: Financial Services | Beta: 0.913 | r: 6.0% | Price: $50.87 | IV: $10.48 | Gap: +385.3%">
+          <div class="tile-ticker">FITB</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ESS | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.706 | r: 5.4% | Price: $268.65 | IV: $50.43 | Gap: +432.7%">
+          <div class="tile-ticker">ESS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ECL | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.890 | r: 6.0% | Price: $273.7 | IV: $50.86 | Gap: +438.1%">
+          <div class="tile-ticker">ECL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GPC | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.656 | r: 5.4% | Price: $127.24 | IV: $-34.05 | Gap: +473.7%">
+          <div class="tile-ticker">GPC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ED | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.259 | r: 5.4% | Price: $103.39 | IV: $-27.25 | Gap: +479.4%">
+          <div class="tile-ticker">ED</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EMR | Discounted Cash Flow | Sector: Industrials | Beta: 1.233 | r: 6.9% | Price: $161.61 | IV: $27.71 | Gap: +483.2%">
+          <div class="tile-ticker">EMR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EQIX | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.973 | r: 6.0% | Price: $1025.72 | IV: $-244.82 | Gap: +519.0%">
+          <div class="tile-ticker">EQIX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HSIC | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.812 | r: 6.0% | Price: $84.88 | IV: $13.57 | Gap: +525.5%">
+          <div class="tile-ticker">HSIC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="GE | Discounted Cash Flow | Sector: Industrials | Beta: 1.350 | r: 7.2% | Price: $309.56 | IV: $47.79 | Gap: +547.7%">
+          <div class="tile-ticker">GE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EL | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 1.274 | r: 6.9% | Price: $91.97 | IV: $-19.56 | Gap: +570.1%">
+          <div class="tile-ticker">EL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ICE | Discounted Net Income | Sector: Financial Services | Beta: 0.934 | r: 6.0% | Price: $150.15 | IV: $20.33 | Gap: +638.5%">
+          <div class="tile-ticker">ICE</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ETN | Discounted Cash Flow | Sector: Industrials | Beta: 1.168 | r: 6.6% | Price: $436.11 | IV: $57.19 | Gap: +662.6%">
+          <div class="tile-ticker">ETN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EIX | Discounted Cash Flow | Sector: Utilities | Beta: 0.614 | r: 5.4% | Price: $53.89 | IV: $6.62 | Gap: +714.4%">
+          <div class="tile-ticker">EIX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HBAN | Discounted Net Income | Sector: Financial Services | Beta: 0.941 | r: 6.0% | Price: $15.33 | IV: $1.7 | Gap: +801.8%">
+          <div class="tile-ticker">HBAN</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="DVN | Discounted Free Cash Flow | Sector: Energy | Beta: 0.426 | r: 5.4% | Price: $47.65 | IV: $-6.4 | Gap: +844.7%">
+          <div class="tile-ticker">DVN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="EMN | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.087 | r: 6.3% | Price: $64.87 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">EMN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MKC | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.634 | r: 5.4% | Price: $44.67 | IV: $32.74 | Gap: +36.4%">
+          <div class="tile-ticker">MKC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MCK | Discounted Cash Flow | Sector: Healthcare | Beta: 0.307 | r: 5.4% | Price: $902.28 | IV: $631.89 | Gap: +42.8%">
+          <div class="tile-ticker">MCK</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MAS | Discounted Cash Flow | Sector: Industrials | Beta: 1.294 | r: 6.9% | Price: $68.36 | IV: $47.76 | Gap: +43.1%">
+          <div class="tile-ticker">MAS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MSCI | Discounted Net Income | Sector: Financial Services | Beta: 1.219 | r: 6.9% | Price: $535.95 | IV: $362.02 | Gap: +48.0%">
+          <div class="tile-ticker">MSCI</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MGM | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.282 | r: 6.9% | Price: $30.48 | IV: $19.57 | Gap: +55.7%">
+          <div class="tile-ticker">MGM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MKTX | Discounted Net Income | Sector: Financial Services | Beta: 0.825 | r: 6.0% | Price: $164.14 | IV: $99.07 | Gap: +65.7%">
+          <div class="tile-ticker">MKTX</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LHX | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.506 | r: 5.4% | Price: $236.6 | IV: $137.99 | Gap: +71.5%">
+          <div class="tile-ticker">LHX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KVUE | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.426 | r: 5.4% | Price: $17.2 | IV: $9.88 | Gap: +74.1%">
+          <div class="tile-ticker">KVUE</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LOW | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.846 | r: 6.0% | Price: $180.8 | IV: $102.51 | Gap: +76.4%">
+          <div class="tile-ticker">LOW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MPC | Discounted Free Cash Flow | Sector: Energy | Beta: 0.527 | r: 5.4% | Price: $422.33 | IV: $212.43 | Gap: +98.8%">
+          <div class="tile-ticker">MPC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MMM | Discounted Cash Flow | Sector: Industrials | Beta: 1.074 | r: 6.3% | Price: $161.89 | IV: $78.28 | Gap: +106.8%">
+          <div class="tile-ticker">MMM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MOH | Discounted Cash Flow | Sector: Healthcare | Beta: 0.755 | r: 5.4% | Price: $189.54 | IV: $81.51 | Gap: +132.5%">
+          <div class="tile-ticker">MOH</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LUV | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.120 | r: 6.6% | Price: $42.47 | IV: $-115.39 | Gap: +136.8%">
+          <div class="tile-ticker">LUV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LMT | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.104 | r: 5.4% | Price: $505.41 | IV: $213.31 | Gap: +136.9%">
+          <div class="tile-ticker">LMT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="META | Discounted Free Cash Flow | Sector: Communication Services | Beta: 1.243 | r: 6.9% | Price: $728.08 | IV: $296.14 | Gap: +145.9%">
+          <div class="tile-ticker">META</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MAA | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.715 | r: 5.4% | Price: $115.27 | IV: $44.76 | Gap: +157.5%">
+          <div class="tile-ticker">MAA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MOS | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 0.831 | r: 6.0% | Price: $21.07 | IV: $-36.4 | Gap: +157.9%">
+          <div class="tile-ticker">MOS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KR | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.406 | r: 5.4% | Price: $59.03 | IV: $22.67 | Gap: +160.4%">
+          <div class="tile-ticker">KR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MSI | Discounted Cash Flow | Sector: Technology | Beta: 0.881 | r: 6.0% | Price: $447.41 | IV: $164.82 | Gap: +171.4%">
+          <div class="tile-ticker">MSI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MS | Discounted Net Income | Sector: Financial Services | Beta: 1.207 | r: 6.9% | Price: $190.31 | IV: $-173.72 | Gap: +209.6%">
+          <div class="tile-ticker">MS</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MDT | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.574 | r: 5.4% | Price: $86.38 | IV: $27.86 | Gap: +210.0%">
+          <div class="tile-ticker">MDT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LW | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.461 | r: 5.4% | Price: $43.6 | IV: $-25.97 | Gap: +267.9%">
+          <div class="tile-ticker">LW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KMX | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.171 | r: 6.6% | Price: $54.92 | IV: $14.89 | Gap: +268.7%">
+          <div class="tile-ticker">KMX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KLAC | Discounted Cash Flow | Sector: Technology | Beta: 1.444 | r: 7.5% | Price: $206.89 | IV: $55.75 | Gap: +271.1%">
+          <div class="tile-ticker">KLAC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MCO | Discounted Net Income | Sector: Financial Services | Beta: 1.334 | r: 7.2% | Price: $441.36 | IV: $116.25 | Gap: +279.7%">
+          <div class="tile-ticker">MCO</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MDLZ | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.402 | r: 5.4% | Price: $58.19 | IV: $13.87 | Gap: +319.5%">
+          <div class="tile-ticker">MDLZ</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KO | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.342 | r: 5.4% | Price: $85.65 | IV: $20.16 | Gap: +324.9%">
+          <div class="tile-ticker">KO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KEYS | Discounted Free Cash Flow | Sector: Technology | Beta: 1.208 | r: 6.9% | Price: $384.64 | IV: $87.79 | Gap: +338.1%">
+          <div class="tile-ticker">KEYS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MRNA | Discounted Cash Flow | Sector: Healthcare | Beta: 1.106 | r: 6.6% | Price: $190.01 | IV: $-55.55 | Gap: +442.1%">
+          <div class="tile-ticker">MRNA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LRCX | Discounted Cash Flow | Sector: Technology | Beta: 1.859 | r: 7.8% | Price: $347.49 | IV: $56.43 | Gap: +515.7%">
+          <div class="tile-ticker">LRCX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LIN | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 0.727 | r: 5.4% | Price: $479.48 | IV: $75.82 | Gap: +532.4%">
+          <div class="tile-ticker">LIN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LYV | Discounted Free Cash Flow | Sector: Communication Services | Beta: 1.116 | r: 6.6% | Price: $168.77 | IV: $25.44 | Gap: +563.4%">
+          <div class="tile-ticker">LYV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KMI | Discounted Free Cash Flow | Sector: Energy | Beta: 0.551 | r: 5.4% | Price: $31.07 | IV: $-5.73 | Gap: +642.2%">
+          <div class="tile-ticker">KMI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MLM | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.101 | r: 6.6% | Price: $482.27 | IV: $62.23 | Gap: +675.0%">
+          <div class="tile-ticker">MLM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LKQ | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.843 | r: 6.0% | Price: $22.8 | IV: $-3.03 | Gap: +853.4%">
+          <div class="tile-ticker">LKQ</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MAR | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.104 | r: 6.6% | Price: $358.96 | IV: $37.12 | Gap: +867.1%">
+          <div class="tile-ticker">MAR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LNT | Discounted Cash Flow | Sector: Utilities | Beta: 0.532 | r: 5.4% | Price: $64.33 | IV: $-8.09 | Gap: +895.4%">
+          <div class="tile-ticker">LNT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LH | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.851 | r: 6.0% | Price: $308.49 | IV: $-34.47 | Gap: +994.9%">
+          <div class="tile-ticker">LH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="LLY | Discounted Cash Flow | Sector: Healthcare | Beta: 0.502 | r: 5.4% | Price: $1142.85 | IV: $100.96 | Gap: +1032.0%">
+          <div class="tile-ticker">LLY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MHK | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.184 | r: 6.6% | Price: $126.41 | IV: $8.4 | Gap: +1404.2%">
+          <div class="tile-ticker">MHK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MCHP | Discounted Free Cash Flow | Sector: Technology | Beta: 1.736 | r: 7.8% | Price: $81.32 | IV: $-2.64 | Gap: +3185.4%">
+          <div class="tile-ticker">MCHP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KEY | Discounted Net Income | Sector: Financial Services | Beta: 1.023 | r: 6.3% | Price: $20.08 | IV: $0.48 | Gap: +4053.1%">
+          <div class="tile-ticker">KEY</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MNST | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.515 | r: 5.4% | Price: $42.94 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">MNST</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="OXY | Discounted Free Cash Flow | Sector: Energy | Beta: 0.164 | r: 5.4% | Price: $58.08 | IV: $44.67 | Gap: +30.0%">
+          <div class="tile-ticker">OXY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TEL | Discounted Free Cash Flow | Sector: Technology | Beta: 1.158 | r: 6.6% | Price: $220.36 | IV: $164.61 | Gap: +33.9%">
+          <div class="tile-ticker">TEL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ROP | Discounted Free Cash Flow | Sector: Technology | Beta: 0.747 | r: 5.4% | Price: $354.32 | IV: $262.98 | Gap: +34.7%">
+          <div class="tile-ticker">ROP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SJM | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.263 | r: 5.4% | Price: $117.19 | IV: $79.15 | Gap: +48.0%">
+          <div class="tile-ticker">SJM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RMD | Discounted Cash Flow | Sector: Healthcare | Beta: 0.766 | r: 5.4% | Price: $218.89 | IV: $147.15 | Gap: +48.8%">
+          <div class="tile-ticker">RMD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RCL | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.750 | r: 7.8% | Price: $277.74 | IV: $183.23 | Gap: +51.6%">
+          <div class="tile-ticker">RCL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RF | Discounted Net Income | Sector: Financial Services | Beta: 1.003 | r: 6.3% | Price: $27.1 | IV: $17.79 | Gap: +52.4%">
+          <div class="tile-ticker">RF</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="STE | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.914 | r: 6.0% | Price: $208.54 | IV: $134.65 | Gap: +54.9%">
+          <div class="tile-ticker">STE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RL | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.353 | r: 7.2% | Price: $363.37 | IV: $228.17 | Gap: +59.3%">
+          <div class="tile-ticker">RL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SYK | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.768 | r: 5.4% | Price: $275.43 | IV: $157.85 | Gap: +74.5%">
+          <div class="tile-ticker">SYK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="REG | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.807 | r: 6.0% | Price: $71.6 | IV: $38.08 | Gap: +88.0%">
+          <div class="tile-ticker">REG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TDG | Discounted Cash Flow | Sector: Industrials | Beta: 0.893 | r: 6.0% | Price: $1090.38 | IV: $540.41 | Gap: +101.8%">
+          <div class="tile-ticker">TDG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="STLD | Discounted Cash Flow | Sector: Basic Materials | Beta: 1.515 | r: 7.8% | Price: $231.99 | IV: $109.81 | Gap: +111.3%">
+          <div class="tile-ticker">STLD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SPGI | Discounted Net Income | Sector: Financial Services | Beta: 1.077 | r: 6.3% | Price: $386.27 | IV: $175.68 | Gap: +119.9%">
+          <div class="tile-ticker">SPGI</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SRE | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.564 | r: 5.4% | Price: $78.38 | IV: $-245.76 | Gap: +131.9%">
+          <div class="tile-ticker">SRE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RTX | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.287 | r: 5.4% | Price: $184.68 | IV: $72.85 | Gap: +153.5%">
+          <div class="tile-ticker">RTX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ROST | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.861 | r: 6.0% | Price: $228.54 | IV: $89.36 | Gap: +155.7%">
+          <div class="tile-ticker">ROST</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SHW | Discounted Cash Flow | Sector: Basic Materials | Beta: 1.089 | r: 6.3% | Price: $319.51 | IV: $124.58 | Gap: +156.5%">
+          <div class="tile-ticker">SHW</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RSG | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.400 | r: 5.4% | Price: $209.56 | IV: $80.36 | Gap: +160.8%">
+          <div class="tile-ticker">RSG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TPR | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.432 | r: 7.5% | Price: $118.12 | IV: $41.1 | Gap: +187.4%">
+          <div class="tile-ticker">TPR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SO | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.316 | r: 5.4% | Price: $83.72 | IV: $-83.18 | Gap: +200.7%">
+          <div class="tile-ticker">SO</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TRMB | Discounted Cash Flow | Sector: Technology | Beta: 1.362 | r: 7.2% | Price: $57.52 | IV: $18.91 | Gap: +204.1%">
+          <div class="tile-ticker">TRMB</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TMO | Discounted Cash Flow | Sector: Healthcare | Beta: 0.854 | r: 6.0% | Price: $654.8 | IV: $175.84 | Gap: +272.4%">
+          <div class="tile-ticker">TMO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="STZ | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.400 | r: 5.4% | Price: $112.87 | IV: $30.0 | Gap: +276.2%">
+          <div class="tile-ticker">STZ</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SYY | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.627 | r: 5.4% | Price: $77.49 | IV: $20.21 | Gap: +283.3%">
+          <div class="tile-ticker">SYY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TECH | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.275 | r: 6.9% | Price: $72.4 | IV: $18.44 | Gap: +292.6%">
+          <div class="tile-ticker">TECH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="T | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.431 | r: 5.4% | Price: $24.3 | IV: $-11.46 | Gap: +312.0%">
+          <div class="tile-ticker">T</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SBAC | Discounted Cash Flow | Sector: Real Estate | Beta: 0.984 | r: 6.0% | Price: $158.49 | IV: $32.8 | Gap: +383.2%">
+          <div class="tile-ticker">SBAC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TSN | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.371 | r: 5.4% | Price: $51.89 | IV: $-17.6 | Gap: +394.8%">
+          <div class="tile-ticker">TSN</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="QRVO | Discounted Free Cash Flow | Sector: Technology | Beta: 1.455 | r: 7.5% | Price: $114.17 | IV: $22.26 | Gap: +412.8%">
+          <div class="tile-ticker">QRVO</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ROK | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.515 | r: 7.8% | Price: $454.35 | IV: $81.15 | Gap: +459.9%">
+          <div class="tile-ticker">ROK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SPG | Discounted Cash Flow | Sector: Real Estate | Beta: 1.312 | r: 7.2% | Price: $200.95 | IV: $34.16 | Gap: +488.3%">
+          <div class="tile-ticker">SPG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TGT | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.986 | r: 6.0% | Price: $156.0 | IV: $24.3 | Gap: +542.0%">
+          <div class="tile-ticker">TGT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TRGP | Discounted Free Cash Flow | Sector: Energy | Beta: 0.722 | r: 5.4% | Price: $281.74 | IV: $39.41 | Gap: +614.8%">
+          <div class="tile-ticker">TRGP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TFX | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.814 | r: 6.0% | Price: $124.12 | IV: $-22.12 | Gap: +661.0%">
+          <div class="tile-ticker">TFX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SNPS | Discounted Cash Flow | Sector: Technology | Beta: 1.227 | r: 6.9% | Price: $489.9 | IV: $56.78 | Gap: +762.8%">
+          <div class="tile-ticker">SNPS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SBUX | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.965 | r: 6.0% | Price: $94.71 | IV: $-12.3 | Gap: +869.9%">
+          <div class="tile-ticker">SBUX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TER | Discounted Cash Flow | Sector: Technology | Beta: 1.778 | r: 7.8% | Price: $449.04 | IV: $46.17 | Gap: +872.5%">
+          <div class="tile-ticker">TER</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TSLA | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.845 | r: 7.8% | Price: $370.59 | IV: $27.73 | Gap: +1236.7%">
+          <div class="tile-ticker">TSLA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="STX | Discounted Cash Flow | Sector: Technology | Beta: 2.087 | r: 7.8% | Price: $848.99 | IV: $36.84 | Gap: +2204.8%">
+          <div class="tile-ticker">STX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="STT | Discounted Net Income | Sector: Financial Services | Beta: 1.418 | r: 7.5% | Price: $175.96 | IV: $-6.45 | Gap: +2828.1%">
+          <div class="tile-ticker">STT</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="SOLV | Discounted Cash Flow | Sector: Healthcare | Beta: 0.687 | r: 5.4% | Price: $87.85 | IV: $-2.56 | Gap: +3526.0%">
+          <div class="tile-ticker">SOLV</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="RVTY | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.089 | r: 6.3% | Price: $151.53 | IV: $-3.4 | Gap: +4551.8%">
+          <div class="tile-ticker">RVTY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TFC | Discounted Net Income | Sector: Financial Services | Beta: 0.862 | r: 6.0% | Price: $46.45 | IV: $nan | Gap: nan%">
+          <div class="tile-ticker">TFC</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TYL | Discounted Free Cash Flow | Sector: Technology | Beta: 0.835 | r: 6.0% | Price: $322.81 | IV: $239.49 | Gap: +34.8%">
+          <div class="tile-ticker">TYL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VTRS | Discounted Cash Flow | Sector: Healthcare | Beta: 0.883 | r: 6.0% | Price: $17.6 | IV: $12.89 | Gap: +36.6%">
+          <div class="tile-ticker">VTRS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PEP | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.361 | r: 5.4% | Price: $125.89 | IV: $92.03 | Gap: +36.8%">
+          <div class="tile-ticker">PEP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="OKE | Discounted Free Cash Flow | Sector: Energy | Beta: 0.719 | r: 5.4% | Price: $87.88 | IV: $60.99 | Gap: +44.1%">
+          <div class="tile-ticker">OKE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NEM | Discounted Cash Flow | Sector: Basic Materials | Beta: 0.543 | r: 5.4% | Price: $115.56 | IV: $78.32 | Gap: +47.5%">
+          <div class="tile-ticker">NEM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PGR | Discounted Net Income | Sector: Financial Services | Beta: 0.259 | r: 5.4% | Price: $210.31 | IV: $140.85 | Gap: +49.3%">
+          <div class="tile-ticker">PGR</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VEEV | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.974 | r: 6.0% | Price: $273.33 | IV: $181.35 | Gap: +50.7%">
+          <div class="tile-ticker">VEEV</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MTCH | Discounted Free Cash Flow | Sector: Communication Services | Beta: 1.323 | r: 7.2% | Price: $40.32 | IV: $26.52 | Gap: +52.0%">
+          <div class="tile-ticker">MTCH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PPG | Discounted Cash Flow | Sector: Basic Materials | Beta: 1.063 | r: 6.3% | Price: $105.15 | IV: $66.92 | Gap: +57.1%">
+          <div class="tile-ticker">PPG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ULTA | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.854 | r: 6.0% | Price: $543.69 | IV: $345.81 | Gap: +57.2%">
+          <div class="tile-ticker">ULTA</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="OMC | Discounted Cash Flow | Sector: Communication Services | Beta: 0.673 | r: 5.4% | Price: $74.15 | IV: $47.15 | Gap: +57.3%">
+          <div class="tile-ticker">OMC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PSA | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.935 | r: 6.0% | Price: $283.81 | IV: $172.27 | Gap: +64.8%">
+          <div class="tile-ticker">PSA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PG | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.377 | r: 5.4% | Price: $144.91 | IV: $87.71 | Gap: +65.2%">
+          <div class="tile-ticker">PG</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="XOM | Discounted Free Cash Flow | Sector: Energy | Beta: 0.175 | r: 5.4% | Price: $164.01 | IV: $98.56 | Gap: +66.4%">
+          <div class="tile-ticker">XOM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NOW | Discounted Free Cash Flow | Sector: Technology | Beta: 0.972 | r: 6.0% | Price: $134.38 | IV: $78.11 | Gap: +72.0%">
+          <div class="tile-ticker">NOW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NTAP | Discounted Free Cash Flow | Sector: Technology | Beta: 1.432 | r: 7.5% | Price: $226.27 | IV: $128.7 | Gap: +75.8%">
+          <div class="tile-ticker">NTAP</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PNR | Discounted Cash Flow | Sector: Industrials | Beta: 1.018 | r: 6.3% | Price: $53.03 | IV: $29.07 | Gap: +82.4%">
+          <div class="tile-ticker">PNR</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ODFL | Discounted Cash Flow | Sector: Industrials | Beta: 1.165 | r: 6.6% | Price: $180.48 | IV: $98.89 | Gap: +82.5%">
+          <div class="tile-ticker">ODFL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VLTO | Discounted Cash Flow | Sector: Industrials | Beta: 0.759 | r: 5.4% | Price: $94.68 | IV: $48.07 | Gap: +97.0%">
+          <div class="tile-ticker">VLTO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NOC | Discounted Cash Flow | Sector: Industrials | Beta: -0.110 | r: 5.4% | Price: $478.0 | IV: $241.59 | Gap: +97.9%">
+          <div class="tile-ticker">NOC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ON | Discounted Free Cash Flow | Sector: Technology | Beta: 1.997 | r: 7.8% | Price: $84.89 | IV: $42.43 | Gap: +100.1%">
+          <div class="tile-ticker">ON</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WAB | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.921 | r: 6.0% | Price: $287.54 | IV: $143.17 | Gap: +100.8%">
+          <div class="tile-ticker">WAB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PSX | Discounted Cash Flow | Sector: Energy | Beta: 0.704 | r: 5.4% | Price: $264.58 | IV: $130.41 | Gap: +102.9%">
+          <div class="tile-ticker">PSX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="UNP | Discounted Cash Flow | Sector: Industrials | Beta: 0.966 | r: 6.0% | Price: $278.28 | IV: $135.47 | Gap: +105.4%">
+          <div class="tile-ticker">UNP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VRSK | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.662 | r: 5.4% | Price: $163.88 | IV: $76.39 | Gap: +114.5%">
+          <div class="tile-ticker">VRSK</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="XYL | Discounted Cash Flow | Sector: Industrials | Beta: 1.000 | r: 6.0% | Price: $101.79 | IV: $47.03 | Gap: +116.4%">
+          <div class="tile-ticker">XYL</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="UPS | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.038 | r: 6.3% | Price: $93.02 | IV: $41.68 | Gap: +123.2%">
+          <div class="tile-ticker">UPS</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="XEL | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.399 | r: 5.4% | Price: $71.4 | IV: $-260.73 | Gap: +127.4%">
+          <div class="tile-ticker">XEL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ORLY | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.515 | r: 5.4% | Price: $84.9 | IV: $36.34 | Gap: +133.6%">
+          <div class="tile-ticker">ORLY</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PCG | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.245 | r: 5.4% | Price: $12.32 | IV: $-30.81 | Gap: +140.0%">
+          <div class="tile-ticker">PCG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="OTIS | Discounted Cash Flow | Sector: Industrials | Beta: 0.875 | r: 6.0% | Price: $64.05 | IV: $26.57 | Gap: +141.0%">
+          <div class="tile-ticker">OTIS</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PNW | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.437 | r: 5.4% | Price: $95.92 | IV: $-232.57 | Gap: +141.2%">
+          <div class="tile-ticker">PNW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NCLH | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 1.881 | r: 7.8% | Price: $15.14 | IV: $-35.97 | Gap: +142.1%">
+          <div class="tile-ticker">NCLH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WY | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.890 | r: 6.0% | Price: $18.47 | IV: $-43.51 | Gap: +142.4%">
+          <div class="tile-ticker">WY</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PLD | Discounted Free Cash Flow | Sector: Real Estate | Beta: 1.316 | r: 7.2% | Price: $128.91 | IV: $52.23 | Gap: +146.8%">
+          <div class="tile-ticker">PLD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PPL | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.583 | r: 5.4% | Price: $32.8 | IV: $-68.85 | Gap: +147.6%">
+          <div class="tile-ticker">PPL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PM | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.395 | r: 5.4% | Price: $187.46 | IV: $75.66 | Gap: +147.8%">
+          <div class="tile-ticker">PM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NDSN | Discounted Cash Flow | Sector: Industrials | Beta: 0.972 | r: 6.0% | Price: $333.54 | IV: $126.59 | Gap: +163.5%">
+          <div class="tile-ticker">NDSN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MTD | Discounted Cash Flow | Sector: Healthcare | Beta: 1.220 | r: 6.9% | Price: $1486.19 | IV: $541.59 | Gap: +174.4%">
+          <div class="tile-ticker">MTD</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NI | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.540 | r: 5.4% | Price: $39.43 | IV: $-52.22 | Gap: +175.5%">
+          <div class="tile-ticker">NI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NXPI | Discounted Cash Flow | Sector: Technology | Beta: 1.817 | r: 7.8% | Price: $243.66 | IV: $86.41 | Gap: +182.0%">
+          <div class="tile-ticker">NXPI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ORCL | Discounted Free Cash Flow | Sector: Technology | Beta: 1.732 | r: 7.8% | Price: $142.3 | IV: $-169.93 | Gap: +183.7%">
+          <div class="tile-ticker">ORCL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WEC | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.457 | r: 5.4% | Price: $101.59 | IV: $-107.49 | Gap: +194.5%">
+          <div class="tile-ticker">WEC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NUE | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.881 | r: 7.8% | Price: $240.39 | IV: $-240.41 | Gap: +200.0%">
+          <div class="tile-ticker">NUE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WTW | Discounted Net Income | Sector: Financial Services | Beta: 0.417 | r: 5.4% | Price: $288.61 | IV: $93.5 | Gap: +208.7%">
+          <div class="tile-ticker">WTW</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NRG | Discounted Free Cash Flow | Sector: Utilities | Beta: 1.173 | r: 6.6% | Price: $95.23 | IV: $-87.27 | Gap: +209.1%">
+          <div class="tile-ticker">NRG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VMC | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.054 | r: 6.3% | Price: $243.06 | IV: $71.72 | Gap: +238.9%">
+          <div class="tile-ticker">VMC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VZ | Discounted Free Cash Flow | Sector: Communication Services | Beta: 0.240 | r: 5.4% | Price: $45.92 | IV: $13.15 | Gap: +249.1%">
+          <div class="tile-ticker">VZ</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WFC | Discounted Net Income | Sector: Financial Services | Beta: 0.916 | r: 6.0% | Price: $80.45 | IV: $22.71 | Gap: +254.3%">
+          <div class="tile-ticker">WFC</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VRTX | Discounted Cash Flow | Sector: Healthcare | Beta: 0.320 | r: 5.4% | Price: $504.73 | IV: $142.06 | Gap: +255.3%">
+          <div class="tile-ticker">VRTX</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NEE | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.644 | r: 5.4% | Price: $76.83 | IV: $21.45 | Gap: +258.1%">
+          <div class="tile-ticker">NEE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PWR | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.200 | r: 6.6% | Price: $676.56 | IV: $178.67 | Gap: +278.6%">
+          <div class="tile-ticker">PWR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TXN | Discounted Cash Flow | Sector: Technology | Beta: 1.314 | r: 7.2% | Price: $293.8 | IV: $72.65 | Gap: +304.4%">
+          <div class="tile-ticker">TXN</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NDAQ | Discounted Net Income | Sector: Financial Services | Beta: 0.974 | r: 6.0% | Price: $90.33 | IV: $19.78 | Gap: +356.6%">
+          <div class="tile-ticker">NDAQ</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="UNH | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.622 | r: 5.4% | Price: $371.9 | IV: $76.49 | Gap: +386.2%">
+          <div class="tile-ticker">UNH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PEG | Discounted Free Cash Flow | Sector: Utilities | Beta: 0.519 | r: 5.4% | Price: $68.07 | IV: $-23.74 | Gap: +386.8%">
+          <div class="tile-ticker">PEG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TT | Discounted Cash Flow | Sector: Industrials | Beta: 1.197 | r: 6.6% | Price: $463.91 | IV: $93.21 | Gap: +397.7%">
+          <div class="tile-ticker">TT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PANW | Discounted Free Cash Flow | Sector: Technology | Beta: 0.908 | r: 6.0% | Price: $403.24 | IV: $80.27 | Gap: +402.4%">
+          <div class="tile-ticker">PANW</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WELL | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.760 | r: 5.4% | Price: $227.71 | IV: $45.25 | Gap: +403.2%">
+          <div class="tile-ticker">WELL</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WMB | Discounted Free Cash Flow | Sector: Energy | Beta: 0.618 | r: 5.4% | Price: $70.54 | IV: $-22.88 | Gap: +408.4%">
+          <div class="tile-ticker">WMB</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WST | Discounted Free Cash Flow | Sector: Healthcare | Beta: 1.135 | r: 6.6% | Price: $364.98 | IV: $70.33 | Gap: +419.0%">
+          <div class="tile-ticker">WST</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="UDR | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.685 | r: 5.4% | Price: $33.27 | IV: $5.53 | Gap: +501.2%">
+          <div class="tile-ticker">UDR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="YUM | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 0.551 | r: 5.4% | Price: $136.12 | IV: $22.02 | Gap: +518.2%">
+          <div class="tile-ticker">YUM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="URI | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.787 | r: 7.8% | Price: $1081.04 | IV: $-223.21 | Gap: +584.3%">
+          <div class="tile-ticker">URI</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="TTWO | Discounted Cash Flow | Sector: Communication Services | Beta: 0.966 | r: 6.0% | Price: $202.73 | IV: $29.6 | Gap: +584.9%">
+          <div class="tile-ticker">TTWO</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="USB | Discounted Net Income | Sector: Financial Services | Beta: 0.971 | r: 6.0% | Price: $57.51 | IV: $-11.84 | Gap: +585.6%">
+          <div class="tile-ticker">USB</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ZBH | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.471 | r: 5.4% | Price: $88.29 | IV: $11.76 | Gap: +650.7%">
+          <div class="tile-ticker">ZBH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WBD | Discounted Free Cash Flow | Sector: Communication Services | Beta: 1.571 | r: 7.8% | Price: $30.94 | IV: $4.1 | Gap: +654.8%">
+          <div class="tile-ticker">WBD</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NTRS | Discounted Net Income | Sector: Financial Services | Beta: 1.257 | r: 6.9% | Price: $171.4 | IV: $20.37 | Gap: +741.5%">
+          <div class="tile-ticker">NTRS</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WM | Discounted Free Cash Flow | Sector: Industrials | Beta: 0.431 | r: 5.4% | Price: $204.45 | IV: $20.46 | Gap: +899.4%">
+          <div class="tile-ticker">WM</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="INVH | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.831 | r: 6.0% | Price: $26.04 | IV: $2.58 | Gap: +909.7%">
+          <div class="tile-ticker">INVH</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WDC | Discounted Cash Flow | Sector: Technology | Beta: 2.182 | r: 7.8% | Price: $415.29 | IV: $39.15 | Gap: +960.6%">
+          <div class="tile-ticker">WDC</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="NSC | Discounted Free Cash Flow | Sector: Industrials | Beta: 1.268 | r: 6.9% | Price: $317.44 | IV: $-34.28 | Gap: +1026.1%">
+          <div class="tile-ticker">NSC</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">6.9%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PFE | Discounted Free Cash Flow | Sector: Healthcare | Beta: 0.299 | r: 5.4% | Price: $27.8 | IV: $-2.77 | Gap: +1105.3%">
+          <div class="tile-ticker">PFE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="JCI | Discounted Cash Flow | Sector: Industrials | Beta: 1.304 | r: 7.2% | Price: $156.24 | IV: $12.19 | Gap: +1181.8%">
+          <div class="tile-ticker">JCI</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">7.2%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VTR | Discounted Free Cash Flow | Sector: Real Estate | Beta: 0.724 | r: 5.4% | Price: $84.01 | IV: $5.82 | Gap: +1343.8%">
+          <div class="tile-ticker">VTR</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WAT | Discounted Cash Flow | Sector: Healthcare | Beta: 1.194 | r: 6.6% | Price: $425.21 | IV: $28.58 | Gap: +1387.8%">
+          <div class="tile-ticker">WAT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PKG | Discounted Free Cash Flow | Sector: Consumer Cyclical | Beta: 0.797 | r: 5.4% | Price: $228.54 | IV: $14.96 | Gap: +1427.7%">
+          <div class="tile-ticker">PKG</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HLT | Discounted Cash Flow | Sector: Consumer Cyclical | Beta: 1.056 | r: 6.3% | Price: $319.36 | IV: $20.65 | Gap: +1446.7%">
+          <div class="tile-ticker">HLT</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.3%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HWM | Discounted Cash Flow | Sector: Industrials | Beta: 1.186 | r: 6.6% | Price: $231.27 | IV: $13.77 | Gap: +1579.0%">
+          <div class="tile-ticker">HWM</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">6.6%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="HPE | Discounted Free Cash Flow | Sector: Technology | Beta: 1.442 | r: 7.5% | Price: $69.33 | IV: $-4.57 | Gap: +1617.7%">
+          <div class="tile-ticker">HPE</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="PNC | Discounted Net Income | Sector: Financial Services | Beta: 0.889 | r: 6.0% | Price: $221.03 | IV: $-14.08 | Gap: +1669.8%">
+          <div class="tile-ticker">PNC</div>
+          <div class="tile-badge" style="background:#FAEEDA;color:#633806">DNI</div>
+          <div class="tile-rate">6.0%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="FCX | Discounted Free Cash Flow | Sector: Basic Materials | Beta: 1.401 | r: 7.5% | Price: $72.04 | IV: $-3.34 | Gap: +2256.2%">
+          <div class="tile-ticker">FCX</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="KDP | Discounted Cash Flow | Sector: Consumer Defensive | Beta: 0.414 | r: 5.4% | Price: $30.37 | IV: $-1.29 | Gap: +2452.9%">
+          <div class="tile-ticker">KDP</div>
+          <div class="tile-badge" style="background:#E6F1FB;color:#0C447C">DCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="ZBRA | Discounted Free Cash Flow | Sector: Technology | Beta: 1.607 | r: 7.8% | Price: $375.86 | IV: $14.67 | Gap: +2461.9%">
+          <div class="tile-ticker">ZBRA</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="MU | Discounted Free Cash Flow | Sector: Technology | Beta: 2.222 | r: 7.8% | Price: $1074.89 | IV: $19.25 | Gap: +5484.1%">
+          <div class="tile-ticker">MU</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.8%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="VST | Discounted Free Cash Flow | Sector: Utilities | Beta: 1.414 | r: 7.5% | Price: $140.02 | IV: $-2.26 | Gap: +6292.9%">
+          <div class="tile-ticker">VST</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">7.5%</div>
+        </div>
+        <div class="tile" style="background:#F09595;color:#791F1F" title="WMT | Discounted Free Cash Flow | Sector: Consumer Defensive | Beta: 0.595 | r: 5.4% | Price: $104.26 | IV: $1.59 | Gap: +6448.4%">
+          <div class="tile-ticker">WMT</div>
+          <div class="tile-badge" style="background:#EAF3DE;color:#27500A">DFCF</div>
+          <div class="tile-rate">5.4%</div>
+        </div></div>
+    </div>
+</div>
+
+<p class="tooltip-note">Hover over any tile to see ticker details, valuation method, beta, discount rate, price, IV, and gap %</p>
+
+</body>
+</html>
