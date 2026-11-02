@@ -51,21 +51,7 @@ export const projects: Project[] = [
     github:
       "https://github.com/thteck/Intrinsic-Value-Calculation-of-Stocks-Using-Machine-Learning-in-Discounted-Cash-Flow",
     demo: "/demos/heatmap.html",
-    featured: true,
-  },
-  {
-    title: "Face Recognition Through Siamese Network",
-    category: "Computer Vision · Deep Learning",
-    description:
-      "A facial recognition system using Siamese neural networks to learn facial similarities and distinguish identities.",
-    technologies: [
-      "Python",
-      "Deep Learning",
-      "Computer Vision",
-      "Siamese Networks",
-    ],
-    github:
-      "https://github.com/thteck/Face-Recognition-Through-Siamese-Network",
+    demoLabel: "View Screenshot",
     featured: true,
   },
 ];
