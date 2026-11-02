@@ -297,7 +297,7 @@ function Projects() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-sky-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-sky-300"
                 >
-                  Live Demo
+                  {project.demoLabel ?? "Live Demo"}
                   <ArrowUpRight size={17} />
                 </a>
               )}

@@ -5,6 +5,7 @@
   technologies: string[];
   github?: string;
   demo?: string;
+  demoLabel?: string;
   featured?: boolean;
 };
 
@@ -32,7 +33,8 @@ export const projects: Project[] = [
     ],
     github:
       "https://github.com/thteck/Options-Strategy-Recommendation-and-Optimisation-System",
-    demo: "http://options-strategy-demo.koreacentral.azurecontainer.io:8501/",
+    demo: "/demos/options-strategy.png",
+    demoLabel: "View Screenshot",
     featured: true,
   },
   {
