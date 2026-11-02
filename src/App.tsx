@@ -5,6 +5,7 @@ import {
   Menu,
   X,
   Code2,
+  Award,
   GraduationCap,
   BriefcaseBusiness,
 } from "lucide-react";
@@ -17,11 +18,14 @@ import {
   education,
 } from "./data/portfolio";
 
+import { certificates } from "./data/certificates";
+
 const navigation = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
+  { label: "Certificates", href: "#certificates" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -391,12 +395,46 @@ function Skills() {
   );
 }
 
+function Certificates() {
+  return (
+    <section id="certificates" className="mx-auto max-w-6xl px-6 py-20">
+      <SectionHeading
+        number="05"
+        title="Certificates"
+        subtitle="Certificates of completion in artificial intelligence, reasoning, and machine learning."
+      />
+      <div className="grid gap-5 sm:grid-cols-2">
+        {certificates.map((certificate) => (
+          <article key={certificate.href} className="glass-card flex flex-col p-7">
+            <div className="mb-5 flex items-center justify-between">
+              <Award className="text-sky-400" size={26} aria-hidden="true" />
+              <span className="font-mono text-xs text-slate-400">{certificate.group}</span>
+            </div>
+            <h3 className="text-xl font-semibold text-white">{certificate.title}</h3>
+            <p className="mt-3 flex-1 text-sm text-slate-400">{certificate.period}</p>
+            <a
+              href={certificate.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View certificate: ${certificate.title} (PDF)`}
+              className="mt-6 inline-flex items-center gap-2 self-start rounded-lg bg-sky-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-sky-300"
+            >
+              View Certificate <span className="text-xs font-normal">PDF</span>
+              <ArrowUpRight size={17} aria-hidden="true" />
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   return (
     <section id="contact" className="mx-auto max-w-6xl px-6 py-24">
       <div className="glass-card p-9 text-center md:p-16">
         <p className="font-mono text-sm text-sky-400">
-          05 / GET IN TOUCH
+          06 / GET IN TOUCH
         </p>
 
         <h2 className="mt-5 text-3xl font-bold text-white md:text-5xl">
@@ -432,6 +470,7 @@ export default function App() {
         <Projects />
         <Experience />
         <Skills />
+        <Certificates />
         <Contact />
       </main>
       <footer className="border-t border-white/10 py-8 text-center text-sm text-slate-500">
