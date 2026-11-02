@@ -32,7 +32,7 @@ export const projects: Project[] = [
     ],
     github:
       "https://github.com/thteck/Options-Strategy-Recommendation-and-Optimisation-System",
-    demo: "http://20.249.51.10:8501/",
+    demo: "http://options-strategy-demo.koreacentral.azurecontainer.io:8501/",
     featured: true,
   },
   {
